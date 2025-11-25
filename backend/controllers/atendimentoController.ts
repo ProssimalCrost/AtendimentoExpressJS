@@ -1,23 +1,24 @@
+import AttendimentoService from '../services/services.ts'
+import type { Request, Response } from "express";
+
 class AttendimentoController {
     // Criar atendimento
-   async create(req, res) {
-        // Logica para criar atendimento
-        const {name, description} = req.body
-        const result = await AttendimentoController.create({name, description})
-        return res.json(result)
-    }
-    
-   async list(req, res) {
-        // Logica para listar atendiemntos
-        const result = await AttendimentoController.list();
-        return res.json(result)
-    }
-   async finish(req, res) {
-        // Logica para finalizar atendimento
-        const {id} = req.params;
-        const result = await AttendimentoController.finish(id);
-        return res.json(result);
-    }
-}
+    async create(req: Request, res: Response) {
+        const { name, description } = req.body;
 
-export default new  AttendimentoController();
+        // 1. validação
+        if (!name || name.trim() === "") {
+            return res.status(400).json({ error: "O nome é obrigatório." });
+        }
+
+        // 2. enviar pro service
+        const result = await AttendimentoService.create({
+            name: name.trim(),
+            description: description?.trim() || null
+        });
+
+        // 3. responder ao cliente
+        return res.status(201).json(result);
+    }}
+
+export default new AttendimentoController();
