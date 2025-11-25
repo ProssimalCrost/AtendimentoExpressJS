@@ -1,5 +1,6 @@
 import AttendimentoService from '../services/services.ts'
-import type { Request, Response } from "express";
+import { response, type Request, type Response } from "express";
+
 
 class AttendimentoController {
     // Criar atendimento
@@ -18,7 +19,20 @@ class AttendimentoController {
         });
 
         // 3. responder ao cliente
-        return res.status(201).json(result);
-    }}
+        return res.status(201).json(result); }
 
+    async list(req: Request, res: Response) {
+        const result = await AttendimentoService.list();
+        return res.status(200).json(result)
+    };
+    
+    async finish(req: Request, res: Response) {
+        const {id} = req.params;
+        const result = await AttendimentoService.finish(id);
+        return res.status(200).json(result)
+    };
+  
+} 
+
+    
 export default new AttendimentoController();
