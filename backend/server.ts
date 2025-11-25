@@ -13,6 +13,4 @@ app.listen(3000, () => {
     console.log("Servidor rodando");
 })
 
-app.post("/test", (req, res ) => {
-    res.send("Teste Ok");
-})
+
