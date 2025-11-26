@@ -1,15 +1,20 @@
-interface AttendanceData {
+interface Attendimento {
+  id: string;
   name: string;
-  description?: string | null;
+  description: string | null;
+  status: "pending" | "finished";
+  created_at: Date;
 }
+
+const attendances: Attendimento[] = []
 
 class AttendimentoService {
     // Criar atendimento
-     async create(data: AttendanceData) {
+     async create(data: Attendimento) {
         // Logica para criar atendimento
         return {
             message: "Atendiemnto criado com sucesso",
-            attendance: {
+            attendimento: {
                 id: Date.now(),
                 name: data.name,
                 description: data.description,

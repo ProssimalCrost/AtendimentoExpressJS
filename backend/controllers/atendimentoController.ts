@@ -5,17 +5,20 @@ import { response, type Request, type Response } from "express";
 class AttendimentoController {
     // Criar atendimento
     async create(req: Request, res: Response) {
-        const { name, description } = req.body;
+        const { name, description, status } = req.body;
 
         // 1. validação
         if (!name || name.trim() === "") {
             return res.status(400).json({ error: "O nome é obrigatório." });
         }
 
-        // 2. enviar pro service
+        // 2. enviar pro service; Deve bater com create do service
         const result = await AttendimentoService.create({
+            id: '', // id gerado no serveces
             name: name.trim(),
-            description: description?.trim() || null
+            description: description?.trim() || null,
+            status: status?.trim() === "finished" ? "pending" : "finished",
+            created_at: new Date()
         });
 
         // 3. responder ao cliente
