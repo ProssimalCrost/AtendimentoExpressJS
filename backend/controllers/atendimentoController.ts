@@ -19,20 +19,26 @@ class AttendimentoController {
         });
 
         // 3. responder ao cliente
-        return res.status(201).json(result); }
+        return res.status(201).json(result);
+    }
 
     async list(req: Request, res: Response) {
         const result = await AttendimentoService.list();
         return res.status(200).json(result)
     };
-    
-    async finish(req: Request, res: Response) {
-        const {id} = req.params;
-        const result = await AttendimentoService.finish(id);
-        return res.status(200).json(result)
-    };
-  
-} 
 
-    
+    async finish(req: Request, res: Response) {
+        const { id } = req.params;
+
+        if (!id) {
+            return res.status(400).json({ error: "ID é obrigatório." });
+        }
+
+        const result = await AttendimentoService.finish(id);
+        return res.status(200).json(result);
+    };
+
+}
+
+
 export default new AttendimentoController();
