@@ -5,7 +5,7 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/atendimentos", router);
+app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
 
 /* Comando para iniciar o srvidor: node --run dev */ 
 
