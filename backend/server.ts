@@ -9,8 +9,7 @@ app.use("/atendimentos", router);
 
 /* Comando para iniciar o srvidor: node --run dev */ 
 
-app.listen(5000, () => {
+app.listen(3000, () => {
     console.log("Servidor rodando");
 })
-
 
