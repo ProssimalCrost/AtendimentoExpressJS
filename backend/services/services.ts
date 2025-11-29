@@ -10,7 +10,7 @@ const attendimento: Attendimento[] = []
 
 class AttendimentoService {
     // Criar atendimento
-    async create(data: AttendimentoData) {
+    async create(data: Attendimento) {
         // Logica para criar atendimento
         const newAttendimento: Attendimento = {
             id: Date.now().toString(),
@@ -20,22 +20,21 @@ class AttendimentoService {
             created_at: new Date()
 
         }
-    };
-     attendimento.push(newAttendimento);
+        attendimento.push(newAttendimento);
 
-    return {
+      return {
         message: "Atendimento criado com sucesso",
         attendimento: newAttendimento
 };
-
+};
 
     async list() {
     // Logica para listar atendiemntos
     return []
 };
-   async finish(id: string) {
-    // Logica para finalizar atendimento
-    return { message: `Atendimento ${id} finalizado com sucesso` }
+    async finish(id: string) {
+        // Logica para finalizar atendimento
+        return { message: `Atendimento ${id} finalizado com sucesso` }
 }
 };
 

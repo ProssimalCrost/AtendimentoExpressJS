@@ -7,9 +7,9 @@ app.use(cors());
 app.use(express.json());
 app.use("/atendimentos", router);
 
-/* Coamndo para iniciar o srvidor: node --run dev */ 
+/* Comando para iniciar o srvidor: node --run dev */ 
 
-app.listen(3000, () => {
+app.listen(5000, () => {
     console.log("Servidor rodando");
 })
 
