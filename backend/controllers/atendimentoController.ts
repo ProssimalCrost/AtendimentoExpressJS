@@ -12,7 +12,7 @@ class AttendimentoController {
             return res.status(400).json({ error: "O nome é obrigatório." });
         }
 
-        // 2. enviar pro service; Deve bater com create do service
+        // 2. Ao enviar pro service; Deve bater com create do service
         const result = await AttendimentoService.create({
             id: '', // id gerado no serveces
             name: name.trim(),
