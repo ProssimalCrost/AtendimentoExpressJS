@@ -21,11 +21,13 @@
   },
   "homepage": "https://github.com/ProssimalCrost/AtendimentoExpressJS#readme",
   "dependencies": {
+    "@prisma/client": "^7.0.1",
     "cors": "^2.8.5",
     "express": "^5.1.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.5"
+    "@types/express": "^5.0.5",
+    "prisma": "^6.19.0"
   }
 }
