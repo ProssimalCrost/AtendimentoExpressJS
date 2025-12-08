@@ -30,7 +30,12 @@ class AttendimentoService {
 
     async list() {
     // Logica para listar atendiemntos
-    return []
+    return prisma.attendance.findMany({
+  orderBy: {
+    created_at: "asc"
+  }
+});
+
 };
     async finish(id: string) {
         // Logica para finalizar atendimento
