@@ -1,4 +1,10 @@
+// server.ts ou server.js (com "type": "module" no package.json)
 
+import { PrismaClient } from '../generated/prisma/client';
+
+// Crie e exporte a instância do cliente
+const prisma = new PrismaClient();
+export { prisma };
 
 interface Attendimento {
     id: string;
