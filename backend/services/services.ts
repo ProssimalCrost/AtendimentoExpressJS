@@ -1,10 +1,8 @@
 // server.ts ou server.js (com "type": "module" no package.json)
 
-import prisma from "../database/db";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
-// Crie e exporte a instância do cliente
-const prisma = new PrismaClient();
-export { prisma };
 
 interface Attendimento {
     id: string;
@@ -38,13 +36,17 @@ class AttendimentoService {
 
     async list() {
     // Logica para listar atendiemntos
-    return prisma.attendance.findMany({
-  orderBy: {
-    created_at: "asc"
-  }
-});
-
+    return attendimento.map(a => {
+      return {
+        id: a.id,
+        name: a.name,
+        description: a.description,
+        status: a.status,
+        created_at: a.created_at
+      }
+    })
 };
+
     async finish(id: string) {
         // Logica para finalizar atendimento
         return { message: `Atendimento ${id} finalizado com sucesso` }
