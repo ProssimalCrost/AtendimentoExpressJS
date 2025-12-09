@@ -1,6 +1,6 @@
 // server.ts ou server.js (com "type": "module" no package.json)
 
-import { PrismaClient } from '../generated/prisma/client';
+import prisma from "../database/prisma";
 
 // Crie e exporte a instância do cliente
 const prisma = new PrismaClient();
