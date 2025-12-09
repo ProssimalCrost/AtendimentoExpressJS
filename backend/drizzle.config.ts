@@ -1,7 +1,6 @@
 // backend/drizzle.config.ts
-import { defineConfig } from "drizzle-kit";
 
-export default defineConfig({
+export default({
   schema: "./drizzle/schema.ts",
   out: "./drizzle/migrations",
   driver: "pg",
