@@ -30,6 +30,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
     "@types/pg": "^8.15.6",
-    "dotenv": "^17.2.3"
+    "dotenv": "^17.2.3",
+    "drizzle-kit": "^0.18.1"
   }
 }
