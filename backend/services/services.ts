@@ -2,7 +2,8 @@
 
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-
+import {db} from "../database/drizzle"
+import { attendimentos } from "../drizzle/schema";
 
 interface Attendimento {
     id: string;
@@ -12,21 +13,19 @@ interface Attendimento {
     created_at: Date;
 }
 
-const attendimento: Attendimento[] = []
 
 class AttendimentoService {
     // Criar atendimento
     async create(data: Attendimento) {
         // Logica para criar atendimento
-        const newAttendimento: Attendimento = {
-            id: Date.now().toString(),
-            name: data.name,
-            description: data.description || null,
-            status: "pending",
-            created_at: new Date()
-
-        }
-        attendimento.push(newAttendimento);
+        const id = crypto.randomUUID();
+        const [newAttendimento] = await db.insert(attendimentos).values({
+          id,
+          name: data.name,
+          description: data.description,
+          status: "pending",
+          createdAt: data.created_at
+        }).returning();
 
       return {
         message: "Atendimento criado com sucesso",
@@ -36,15 +35,12 @@ class AttendimentoService {
 
     async list() {
     // Logica para listar atendiemntos
-    return attendimento.map(a => {
-      return {
-        id: a.id,
-        name: a.name,
-        description: a.description,
-        status: a.status,
-        created_at: a.created_at
-      }
-    })
+    const rows = await db
+    .select()
+    .from(attendimentos)
+    .orderBy(attendimentos.createdAt);
+
+    return {attendimentos: rows}
 };
 
     async finish(id: string) {

@@ -39,9 +39,8 @@ class AttendimentoController {
 
         const result = await AttendimentoService.finish(id);
         return res.status(200).json(result);
-    };
 
-}
-
+};
+};
 
 export default new AttendimentoController();
