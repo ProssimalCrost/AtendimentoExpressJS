@@ -2,8 +2,9 @@
 
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import {db} from "../database/drizzle"
-import { attendimentos } from "../drizzle/schema";
+import { database } from "../database/drizzle.ts";
+import crypto from "crypto";
+import { attendimentos } from "../database/schema.ts";
 
 interface Attendimento {
     id: string;
@@ -19,7 +20,7 @@ class AttendimentoService {
     async create(data: Attendimento) {
         // Logica para criar atendimento
         const id = crypto.randomUUID();
-        const [newAttendimento] = await db.insert(attendimentos).values({
+        const [newAttendimento] = await database.insert(attendimentos).values({
           id,
           name: data.name,
           description: data.description,
@@ -35,7 +36,7 @@ class AttendimentoService {
 
     async list() {
     // Logica para listar atendiemntos
-    const rows = await db
+    const rows = await database
     .select()
     .from(attendimentos)
     .orderBy(attendimentos.createdAt);

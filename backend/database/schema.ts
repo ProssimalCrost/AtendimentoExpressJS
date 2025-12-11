@@ -8,3 +8,5 @@ export const attendimentos = pgTable("atendimentos", {
   status: varchar("status", { length: 20 }).default("pending"),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+// npx drizzle-kit studio command to open the visual editor
