@@ -11,8 +11,10 @@ interface Attendimento {
     name: string;
     description: string | null;
     status: "pending" | "finished";
-    created_at: Date;
+   // created_at: Date;
 }
+
+console.log("SERVICE CARREGADO DE:", __filename);
 
 
 class AttendimentoService {
@@ -25,24 +27,27 @@ class AttendimentoService {
           name: data.name,
           description: data.description,
           status: "pending",
-          createdAt: data.created_at
+        // created_at: data.created_at
         }).returning();
+
+        console.log(newAttendimento)
 
       return {
         message: "Atendimento criado com sucesso",
         attendimento: newAttendimento
 };
+   
 };
 
     async list() {
     // Logica para listar atendiemntos
-    const rows = await database
+  /*  const rows = await database
     .select()
     .from(attendimentos)
-    .orderBy(attendimentos.createdAt);
+    .orderBy(attendimentos.created_at); 
 
-    return {attendimentos: rows}
-};
+    return {attendimentos: rows} */
+}; 
 
     async finish(id: string) {
         // Logica para finalizar atendimento
