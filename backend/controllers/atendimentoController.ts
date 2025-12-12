@@ -1,5 +1,10 @@
 import AttendimentoService from '../services/services.ts'
 import { response, type Request, type Response } from "express";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 console.log("CONTROLLER CARREGADO DE:", __filename);
 
@@ -8,7 +13,10 @@ class AttendimentoController {
     // Criar atendimento
     async create(req: Request, res: Response) {
 
+        
+
         const { name, description, status } = req.body;
+        console.log("REQ BODY REAL:", req.body);
 
         // 1. validação
         if (!name || name.trim() === "") {
@@ -21,7 +29,7 @@ class AttendimentoController {
             name: name.trim(),
             description: description?.trim() || null,
             status: status?.trim() === "finished" ? "pending" : "finished",
-          //created_at: new Date()
+            
         });
 
         // 3. responder ao cliente
