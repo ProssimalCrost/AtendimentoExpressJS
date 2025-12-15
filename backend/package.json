@@ -30,8 +30,9 @@
     "@types/express": "^5.0.5",
     "@types/pg": "^8.15.6",
     "dotenv": "^17.2.3",
-    "drizzle-kit": "^0.31.8",
+    "drizzle-kit": "^0.18.1",
     "drizzle-orm": "^0.45.1",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0"
   }
 }
