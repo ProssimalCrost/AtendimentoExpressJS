@@ -1,13 +1,5 @@
 import AttendimentoService from '../services/services.ts'
 import { response, type Request, type Response } from "express";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-console.log("CONTROLLER CARREGADO DE:", __filename);
-
 
 class AttendimentoController {
     // Criar atendimento
