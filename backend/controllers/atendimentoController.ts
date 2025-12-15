@@ -5,8 +5,6 @@ class AttendimentoController {
     // Criar atendimento
     async create(req: Request, res: Response) {
 
-        
-
         const { name, description, status } = req.body;
         console.log("REQ BODY REAL:", req.body);
 

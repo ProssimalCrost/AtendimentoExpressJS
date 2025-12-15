@@ -16,7 +16,7 @@ class AtendimentoService {
    */
 
   async create(data: CreateAtendimentoDTO) {
-     console.log("DATABASE_URL:", process.env.DATABASE_URL);
+     
     // INSERT no banco (sem returning)
     await database
       .insert(atendimentos)

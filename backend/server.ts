@@ -1,6 +1,9 @@
+import "dotenv/config";
 import express from "express";
 import {router} from "./routes/atendimentos.ts";
 import cors from "cors";
+
+
 
 const app = express();
 app.use(cors());
@@ -14,3 +17,5 @@ app.listen(3000, () => {
     console.log("Servidor rodando");
 })
 
+// é necessario import "dotenv/config" 
+// no topo deste arquivo para funcionar a variavel de ambiente .env
