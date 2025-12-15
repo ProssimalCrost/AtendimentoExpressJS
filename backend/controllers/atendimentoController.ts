@@ -25,10 +25,10 @@ class AttendimentoController {
 
         // 2. a requisição, deve bater com create do service
         const result = await AttendimentoService.create({
-            id: '', // id gerado no serveces
+          //  id: '', // id gerado no serveces
             name: name.trim(),
             description: description?.trim() || null,
-            status: status?.trim() === "finished" ? "pending" : "finished",
+         //   status: status?.trim() === "finished" ? "pending" : "finished",
             
         });
 

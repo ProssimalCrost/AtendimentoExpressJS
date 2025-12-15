@@ -15,10 +15,10 @@ console.log("CONTROLLER CARREGADO DE:", __filename);
 
 
 interface Attendimento {
-    id: string;
+  //  id: string;
     name: string;
     description: string | null;
-    status: "pending" | "finished";
+ //   status: "pending" | "finished";
     
 }
 
@@ -29,10 +29,10 @@ class AttendimentoService {
         // Logica para criar atendimento
         const id = crypto.randomUUID();
         const [newAttendimento] = await database.insert(attendimentos).values({
-          id,
+       //   id,
           name: data.name,
           description: data.description,
-          status: "pending",
+       //   status: "pending",
           
         }).returning();
 

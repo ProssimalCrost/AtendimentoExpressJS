@@ -1,5 +1,5 @@
 {
-  "id": "13ac87bc-99f9-4579-951c-59e688acb1a3",
+  "id": "aa4a2efc-4f37-4513-9f1d-8bcb8d242f86",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -8,13 +8,6 @@
       "name": "atendimentos",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
         "name": {
           "name": "name",
           "type": "varchar(100)",
@@ -26,13 +19,6 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
-        },
-        "status": {
-          "name": "status",
-          "type": "varchar(20)",
-          "primaryKey": false,
-          "notNull": false,
-          "default": "'pending'"
         }
       },
       "indexes": {},
