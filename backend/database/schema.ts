@@ -10,7 +10,7 @@ export const atendimentos = pgTable("atendimentos", {
 
   status: varchar("status", { length: 20 }).default("pending"),
 
-  created_at: timestamp("created_at").defaultNow(),
+  created_at: timestamp("created_at").notNull().defaultNow(),
 
 });
 

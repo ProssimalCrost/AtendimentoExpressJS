@@ -1,24 +1,20 @@
 import { database } from "../database/drizzle.ts";
 import { atendimentos } from "../database/schema.ts";
-
-/**
+import { asc } from "drizzle-orm";
+import crypto from "crypto";
+/**A
  * Dados que vêm do controller
  */
 interface CreateAtendimentoDTO {
   name: string;
   description: string | null;
+  status: "pending" | "finished"
 }
 
-  const id = crypto.randomUUID();
-
 class AtendimentoService {
-
-  /**
-   * CREATE — POST /atendimentos
-   */
-
+  /* CREATE — POST /atendimentos */
   async create(data: CreateAtendimentoDTO) {
-     
+      const id = crypto.randomUUID();
     // INSERT no banco (sem returning)
     await database
       .insert(atendimentos)
@@ -40,7 +36,8 @@ class AtendimentoService {
   async list() {
     const rows = await database
       .select()
-      .from(atendimentos);
+      .from(atendimentos)
+      .orderBy(asc(atendimentos.created_at));
 
     return rows;
   }
