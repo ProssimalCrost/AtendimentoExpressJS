@@ -23,14 +23,16 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
     "@types/pg": "^8.15.6",
     "dotenv": "^17.2.3",
-    "drizzle-kit": "^0.31.8",
+    "drizzle-kit": "^0.18.1",
     "drizzle-orm": "^0.45.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0"
