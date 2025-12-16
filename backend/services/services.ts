@@ -9,6 +9,8 @@ interface CreateAtendimentoDTO {
   description: string | null;
 }
 
+  const id = crypto.randomUUID();
+
 class AtendimentoService {
 
   /**
@@ -23,10 +25,12 @@ class AtendimentoService {
       .values({
         name: data.name,
         description: data.description,
+        // status e created_at ficam por conta do banco
       });
 
     return {
-      message: "Atendimento criado com sucesso"
+      message: "Atendimento criado com sucesso",
+      id,
     };
   }
 
