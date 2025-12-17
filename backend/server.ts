@@ -4,6 +4,7 @@ import {router} from "./routes/atendimentos.ts";
 import cors from "cors";
 import http from "http";
 import {Server as IOServer} from "socket.io"
+import { initSocket } from "../frontend/socket.ts";
 
 const app = express();
 app.use(cors());
@@ -25,9 +26,10 @@ io.on("connection", (socket) => {
 
 app.use(express.json());
 
-app.listen(3000, () => {
-    console.log("Servidor rodando");
-})
+httpServer.listen(3333, () => {
+  console.log("Servidor rodando na porta 3333");
+});
+
 
 // é necessario import "dotenv/config" 
 // no topo deste arquivo para funcionar a variavel de ambiente .env
