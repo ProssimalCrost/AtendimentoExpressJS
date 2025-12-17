@@ -3,7 +3,7 @@ import express from "express";
 import {router} from "./routes/atendimentos.ts";
 import cors from "cors";
 import http from "http";
-
+import {Server as IOServer} from "socket.io"
 
 const app = express();
 app.use(cors());
@@ -12,8 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
 
 /* Comando para iniciar o srvidor: node --run dev http://localhost:3000/atendimentos */ 
-const server = http.createServer(app);
-const io = new server(app, {
+const httpServer = http.createServer(app);
+const io = new IOServer(httpServer, {
     cors: {
         origin: "*", 
     }
