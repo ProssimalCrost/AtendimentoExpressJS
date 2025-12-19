@@ -2,6 +2,9 @@ import { database } from "../database/drizzle.ts";
 import { atendimentos } from "../database/schema.ts";
 import { asc } from "drizzle-orm";
 import crypto from "crypto";
+import { io } from "../server.ts"
+import { eq } from "drizzle-orm"
+
 /**A
  * Dados que vêm do controller
  */
@@ -21,8 +24,16 @@ class AtendimentoService {
       .values({
         name: data.name,
         description: data.description,
-        // status e created_at ficam por conta do banco
+        status: "pending"
       });
+
+      io.emit("attendance:new", {
+        id,
+        name: data.name,
+        description: data.description,
+        status: "pending",
+      });
+       console.log("attendance:new");
 
     return {
       message: "Atendimento criado com sucesso",
@@ -47,6 +58,15 @@ class AtendimentoService {
    * (simulado por enquanto, pois sua tabela não tem status/id)
    */
   async finish(id: string) {
+    await database
+      .update(atendimentos)
+      .set({ status: "finished" })
+      .where(eq(atendimentos.id, id));
+
+      console.log("🔥 Emitindo attendance:finished", id);
+      
+      io.emit("attendance:finished", { id });
+
     return {
       message: `Atendimento ${id} finalizado com sucesso`
     };

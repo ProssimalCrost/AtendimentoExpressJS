@@ -30,6 +30,7 @@ httpServer.listen(3333, () => {
   console.log("Servidor rodando na porta 3333");
 });
 
+export {io};
 
 // é necessario import "dotenv/config" 
 // no topo deste arquivo para funcionar a variavel de ambiente .env

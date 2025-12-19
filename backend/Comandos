@@ -6,3 +6,9 @@ Gera nova migration para o db
 
 npx drizzle-kit push
 Envia para o db
+
+npm audit fix --force
+força qual quer erro
+
+npx drizzle-kit studio
+abre o studio
