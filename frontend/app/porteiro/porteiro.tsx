@@ -1,0 +1,65 @@
+"use client";
+
+import { useState } from "react";
+
+export default function PorteiroPage() {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function criarAtendimento(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name.trim()) return;
+
+    setLoading(true);
+
+    await fetch("http://localhost:3333/atendimentos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        description: description || null,
+      }),
+    });
+
+    setName("");
+    setDescription("");
+    setLoading(false);
+  }
+
+  return (
+    <main className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form
+        onSubmit={criarAtendimento}
+        className="bg-white p-8 rounded-xl shadow w-full max-w-md space-y-4"
+      >
+        <h1 className="text-2xl font-bold text-center">
+          Registrar Atendimento
+        </h1>
+
+        <input
+          type="text"
+          placeholder="Nome do cliente"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full border rounded px-3 py-2"
+        />
+
+        <input
+          type="text"
+          placeholder="Descrição (opcional)"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full border rounded px-3 py-2"
+        />
+
+        <button
+          disabled={loading}
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+        >
+          {loading ? "Salvando..." : "Adicionar"}
+        </button>
+      </form>
+    </main>
+  );
+}
