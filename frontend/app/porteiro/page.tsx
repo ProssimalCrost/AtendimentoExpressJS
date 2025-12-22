@@ -33,7 +33,7 @@ export default function PorteiroPage() {
         onSubmit={criarAtendimento}
         className="bg-white p-8 rounded-xl shadow w-full max-w-md space-y-4"
       >
-        <h1 className="text-2xl font-bold text-center">
+        <h1 className="text-2xl font-bold text-center text-black">
           Registrar Atendimento
         </h1>
 
@@ -42,7 +42,7 @@ export default function PorteiroPage() {
           placeholder="Nome do cliente"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2 text-gray-600"
         />
 
         <input
@@ -50,7 +50,7 @@ export default function PorteiroPage() {
           placeholder="Descrição (opcional)"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full border rounded px-3 py-2"
+          className="w-full border rounded px-3 py-2 text-gray-600"
         />
 
         <button
