@@ -15,11 +15,9 @@ class AttendimentoController {
 
         // 2. a requisição, deve bater com create do service
         const result = await AttendimentoService.create({
-          //  id: '', // id gerado no serveces
             name: name.trim(),
             description: description?.trim() || null,
-         //   status: status?.trim() === "finished" ? "pending" : "finished",
-            
+            status: status?.trim() === "finished" ? "pending" : "finished",
         });
 
         // 3. responder ao cliente
@@ -27,8 +25,13 @@ class AttendimentoController {
     }
 
     async list(req: Request, res: Response) {
-        const result = await AttendimentoService.list();
-        return res.status(200).json(result)
+
+        const limit = Number(req.query.limit) || 50;
+        const atendimentos = await AttendimentoService.list(limit)
+
+     //  const result = await AttendimentoService.list();
+
+        return res.status(200).json(atendimentos)
     };
 
     async finish(req: Request, res: Response) {

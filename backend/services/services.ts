@@ -44,11 +44,12 @@ class AtendimentoService {
   /**
    * LIST — GET /atendimentos
    */
-  async list() {
+  async list(limit = 50) {
     const rows = await database
       .select()
       .from(atendimentos)
-      .orderBy(asc(atendimentos.created_at));
+      .orderBy(asc(atendimentos.created_at))
+      .limit(limit);
 
     return rows;
   }
