@@ -3,9 +3,8 @@
   "compilerOptions": {
     // File Layout
     "rootDir": "./",
-     "outDir": "./dist",
-     "allowImportingTsExtensions": true,
-      "noEmit": true, // or "emitDeclarationOnly": true,
+     "outDir": "dist",
+     
 
     // Environment Settings,
     // See also https://aka.ms/tsconfig/module,
