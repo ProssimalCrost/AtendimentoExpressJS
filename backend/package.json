@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-  "dev": "ts-node-dev src/server.ts",
-  "build": "tsc",
-  "start": "node dist/server.js",
-  "test": "node --test"
+    "dev": "ts-node-dev src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "pg": "^8.16.3",
-    "socket.io": "^4.8.1",
+    "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
