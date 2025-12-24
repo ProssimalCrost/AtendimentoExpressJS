@@ -1,8 +1,8 @@
-import { database } from "../database/drizzle.ts";
-import { atendimentos } from "../database/schema.ts";
+import { database } from "../database/drizzle";
+import { atendimentos } from "../database/schema";
 import { asc } from "drizzle-orm";
 import crypto from "crypto";
-import { io } from "../server.ts"
+import { io } from "../server"
 import { eq } from "drizzle-orm"
 
 /**A

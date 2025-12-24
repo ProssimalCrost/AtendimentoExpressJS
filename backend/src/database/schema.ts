@@ -1,4 +1,4 @@
-// backend/drizzle/schema.ts
+// backend/drizzle/schema
 import { pgTable, varchar, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const atendimentos = pgTable("atendimentos", {

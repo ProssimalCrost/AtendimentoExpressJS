@@ -1,4 +1,4 @@
-import AttendimentoService from '../services/services.ts'
+import AttendimentoService from '../services/services'
 import { response, type Request, type Response } from "express";
 
 class AttendimentoController {
