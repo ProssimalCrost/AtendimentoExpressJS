@@ -4,7 +4,7 @@ import {router} from "./routes/atendimentos.ts";
 import cors from "cors";
 import http from "http";
 import {Server as IOServer} from "socket.io"
-import { initSocket } from "../frontend/socket.ts";
+
 
 const app = express();
 app.use(cors());
