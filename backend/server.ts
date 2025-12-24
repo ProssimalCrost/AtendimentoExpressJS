@@ -26,9 +26,12 @@ io.on("connection", (socket) => {
 
 app.use(express.json());
 
-httpServer.listen(3333, () => {
-  console.log("Servidor rodando na porta 3333");
+const PORT = process.env.PORT || 3333;
+
+httpServer.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
 });
+
 
 export {io};
 

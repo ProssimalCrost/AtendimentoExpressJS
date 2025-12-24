@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "build": "tsc",
-    "start": "node server.ts",
-    "dev": "node --run start -- --watch",
-    "test": "node --test"
+  "dev": "ts-node-dev src/server.ts",
+  "build": "tsc",
+  "start": "node dist/server.js",
+  "test": "node --test"
   },
   "repository": {
     "type": "git",
