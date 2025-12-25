@@ -1,4 +1,4 @@
-import AttendimentoService from '../services/services'
+import AttendimentoService from '../services/services.js'
 import { response, type Request, type Response } from "express";
 
 class AttendimentoController {
