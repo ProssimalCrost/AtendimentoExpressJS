@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    /* Estrutura de pastas */
+    "rootDir": "src",
+    "outDir": "dist",
+
+    /* Node.js + ESM (produção) */
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2020",
+
+    /* Interoperabilidade */
+    "esModuleInterop": true,
+
+    /* Tipagem */
+    "types": ["node"],
+    "strict": true,
+
+    /* Build */
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"]
+}
