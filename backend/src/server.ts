@@ -7,7 +7,12 @@ import {Server as IOServer} from "socket.io"
 
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: [
+        "HTTPS://localhost:3000",
+        "https://atendimento-express.vercel.app/",
+    ]
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
@@ -16,7 +21,10 @@ app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em 
 const httpServer = http.createServer(app);
 const io = new IOServer(httpServer, {
     cors: {
-        origin: "*", 
+        origin: [
+            "HTTPS://localhost:3000",
+            "https://atendimento-express.vercel.app/",
+        ]
     }
 });
 
