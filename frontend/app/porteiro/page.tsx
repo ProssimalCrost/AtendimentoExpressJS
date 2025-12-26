@@ -13,7 +13,7 @@ export default function PorteiroPage() {
 
     setLoading(true);
 
-    await fetch("http://localhost:3333/atendimentos", {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/porteiro`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

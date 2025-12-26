@@ -9,7 +9,7 @@ import {Server as IOServer} from "socket.io"
 const app = express();
 app.use(cors({
     origin: [
-        "HTTPS://localhost:3000",
+        "https://localhost:3000",
         "https://atendimento-express.vercel.app/",
     ]
 }));
@@ -22,7 +22,7 @@ const httpServer = http.createServer(app);
 const io = new IOServer(httpServer, {
     cors: {
         origin: [
-            "HTTPS://localhost:3000",
+            "https://localhost:3000",
             "https://atendimento-express.vercel.app/",
         ]
     }
@@ -34,14 +34,13 @@ io.on("connection", (socket) => {
 
 app.use(express.json());
 
+export {io};
+
 const PORT = process.env.PORT || 3333;
 
 httpServer.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
-
-
-export {io};
 
 // é necessario import "dotenv/config" 
 // no topo deste arquivo para funcionar a variavel de ambiente .env
