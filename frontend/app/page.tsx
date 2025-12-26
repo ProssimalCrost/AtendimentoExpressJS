@@ -2,9 +2,9 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-100">
+    <main className="min-h-screen flex items-center justify-center">
       <div className="bg-white p-10 rounded-xl shadow w-full max-w-md space-y-6 text-center">
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-2xl font-bold text-black">
           Sistema de Atendimentos
         </h1>
 
@@ -21,7 +21,7 @@ export default function Home() {
           </Link>
 
           <Link
-            href="/admin"
+            href="/atendimento"
             className="bg-gray-800 text-white py-3 rounded-md hover:bg-gray-900"
           >
             Acesso Administrativo

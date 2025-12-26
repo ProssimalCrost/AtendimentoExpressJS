@@ -28,7 +28,7 @@ export default function PorteiroPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-100">
+    <main className="min-h-screen flex items-center justify-center bg-gray-200">
       <form
         onSubmit={criarAtendimento}
         className="bg-white p-8 rounded-xl shadow w-full max-w-md space-y-4"
