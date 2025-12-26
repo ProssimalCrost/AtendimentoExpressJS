@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     /* Estrutura de pastas */
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
 
     /* Node.js + ESM (produção) */
@@ -20,5 +20,6 @@
     "sourceMap": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*"]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
