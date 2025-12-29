@@ -10,8 +10,10 @@ const app = express();
 app.use(cors({
     origin: [
         "https://localhost:3000",
-        "https://atendimento-express.vercel.app/",
-    ]
+        "https://atendimentoexpress-1kz00063s-projects.vercel.app",
+    ],
+    methods: ["GET", "POST", "PATCH", "OPTIONS"],
+    credentials: true,
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -23,8 +25,9 @@ const io = new IOServer(httpServer, {
     cors: {
         origin: [
             "https://localhost:3000",
-            "https://atendimento-express.vercel.app/",
-        ]
+            "https://atendimentoexpress-1kz00063s-projects.vercel.app",
+         ],
+    methods: ["GET", "POST"],
     }
 });
 
