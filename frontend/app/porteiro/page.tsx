@@ -13,19 +13,32 @@ export default function PorteiroPage() {
 
     setLoading(true);
 
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/atendimentos`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        description: description || null,
-      }),
-    });
+    try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/atendimentos`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          description: description || null,
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("Erro ao salvar atendimento");
+    }
 
     setName("");
     setDescription("");
-    setLoading(false);
+  } catch (err) {
+    alert("Erro ao salvar. Tente novamente.");
+    console.error(err);
+  } finally {
+    setLoading(false); // 🔑 SEMPRE EXECUTA
   }
+}
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-200">
