@@ -25,6 +25,7 @@ export default function PorteiroPage() {
         }),
       }
     );
+    console.log("API:", process.env.NEXT_PUBLIC_API_URL);
 
     if (!res.ok) {
       throw new Error("Erro ao salvar atendimento");
