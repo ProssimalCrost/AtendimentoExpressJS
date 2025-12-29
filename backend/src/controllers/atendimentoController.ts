@@ -7,6 +7,8 @@ class AttendimentoController {
 
         const { name, description, status } = req.body;
         console.log("REQ BODY REAL:", req.body);
+        console.log("➡️ POST /atendimentos recebido", req.body);
+
 
         // 1. validação
         if (!name || name.trim() === "") {
