@@ -12,10 +12,10 @@ export default function PorteiroPage() {
     if (!name.trim()) return;
 
     setLoading(true);
-
+///atendimentos
     try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/atendimentos`,
+      `${process.env.NEXT_PUBLIC_API_URL}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
