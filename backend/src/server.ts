@@ -8,9 +8,19 @@ import { router } from "./routes/atendimentos.js";
 const app = express();
 
 /* =========================
-   🔑 CORS GLOBAL (ABERTO)
+   🔑 CORS EXPRESS (PRIMEIRO)
 ========================= */
-app.use(cors());
+const FRONTEND_URL = "https://atendimento-express.vercel.app";
+
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    methods: ["GET", "POST", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// responde o preflight
 app.options("*", cors());
 
 /* =========================
@@ -31,8 +41,8 @@ const httpServer = http.createServer(app);
 
 const io = new IOServer(httpServer, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST", "PATCH"],
+    origin: FRONTEND_URL,
+    methods: ["GET", "POST"],
   },
 });
 
