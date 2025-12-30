@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
     /* Estrutura de pastas */
-    "rootDir": ".",
+    "rootDir": "./src",
     "outDir": "./dist",
 
     /* Node.js + ESM (produção) */
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2020",
+
+    "allowImportingTsExtensions": false,
 
     /* Interoperabilidade */
     "esModuleInterop": true,
@@ -20,6 +22,6 @@
     "sourceMap": true,
     "skipLibCheck": true
   },
-  "include": ["**/*.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
