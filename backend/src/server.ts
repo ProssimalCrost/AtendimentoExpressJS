@@ -35,8 +35,6 @@ io.on("connection", (socket) => {
     console.log("Cliente conectado:", socket.id);
 });
 
-app.use(express.json());
-
 export {io};
 
 const PORT = process.env.PORT || 3333;
