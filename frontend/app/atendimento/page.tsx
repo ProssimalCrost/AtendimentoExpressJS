@@ -14,7 +14,7 @@ export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/atendimentos`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}`)
       .then((res) => res.json())
       .then((data) => setAtendimentos(data));
 
