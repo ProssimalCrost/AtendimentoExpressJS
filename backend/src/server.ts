@@ -30,7 +30,7 @@ const io = new IOServer(httpServer, {
             "http://localhost:3000",
             "https://atendimento-express.vercel.app"
         ],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PATCH", "OPTIONS"],
     }
 });
 
