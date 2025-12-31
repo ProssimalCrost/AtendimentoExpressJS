@@ -10,4 +10,4 @@ router.get('/', (req, res) => AttendimentoController.list(req, res))
 
 router.patch('/:id/finish', (req, res) => AttendimentoController.finish(req, res))
 
-export { router };
+export  { router };

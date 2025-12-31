@@ -8,8 +8,9 @@ import {Server as IOServer} from "socket.io"
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ type: "*/*" }));
 app.use(express.urlencoded({ extended: true }));
+
 app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
 
 app.use(cors({
