@@ -14,16 +14,13 @@ export default function PorteiroPage() {
     setLoading(true);
 ///atendimentos
     try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}`, 
+    const res =
+     await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, 
       {
         mode: "no-cors",
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          description: description || null,
-        }),
+        body: JSON.stringify({ name, description: description || null }),
       }
     );
     console.log("API:", process.env.NEXT_PUBLIC_API_URL);

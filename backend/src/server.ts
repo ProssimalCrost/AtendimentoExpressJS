@@ -21,8 +21,6 @@ app.use(cors({
     credentials: true,
 }));
 
-
-
 /* Comando para iniciar o srvidor: node --run dev http://localhost:3000/atendimentos */ 
 const httpServer = http.createServer(app);
 const io = new IOServer(httpServer, {
