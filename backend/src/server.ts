@@ -5,13 +5,10 @@ import cors from "cors";
 import http from "http";
 import {Server as IOServer} from "socket.io"
 
-
 const app = express();
 
 app.use(express.json({ type: "*/*" }));
 app.use(express.urlencoded({ extended: true }));
-
-app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
 
 app.use(cors({
     origin: [
@@ -33,6 +30,10 @@ const io = new IOServer(httpServer, {
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
     }
 });
+
+
+app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
+
 
 io.on("connection", (socket) => {
     console.log("Cliente conectado:", socket.id);
