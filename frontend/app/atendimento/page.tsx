@@ -43,7 +43,9 @@ export default function AtendimentosPage() {
   const finalizados = atendimentos.filter(a => a.status === "finished");
 
   async function finalizarAtendimento(id: string) {
-    await fetch(`http://localhost:3333/atendimentos/${id}/finish`,{
+    await fetch(`http://localhost:3333/atendimentos/${id}/finish`,
+      {
+      mode: "no-cors",
       method: "PATCH",
     });
   }
