@@ -1,7 +1,7 @@
 npm install drizzle-kit@latest drizzle-orm@latest 
 atualiza o drizzle para ultiam versão
 
-npx drizzle-kit generate
+npx drizzle-kit generate:pg
 Gera nova migration para o db
 
 npx drizzle-kit push
