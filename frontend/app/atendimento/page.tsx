@@ -45,7 +45,6 @@ export default function AtendimentosPage() {
   async function finalizarAtendimento(id: string) {
     await fetch(`http://localhost:3333/atendimentos/${id}/finish`,
       {
-      mode: "no-cors",
       method: "PATCH",
     });
   }
