@@ -32,14 +32,13 @@ const io = new IOServer(httpServer, {
 });
 
 
-app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
-
-
 io.on("connection", (socket) => {
     console.log("Cliente conectado:", socket.id);
 });
 
 export {io};
+
+app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
 
 const PORT = process.env.PORT || 3333;
 

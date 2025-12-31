@@ -44,7 +44,7 @@ export default function AtendimentosPage() {
 
   async function finalizarAtendimento(id: string) {
     await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/atendimentos/${id}/finish`,
+      `${process.env.NEXT_PUBLIC_API_URL}/${id}/finish`,
       {
       method: "PATCH",
     });
