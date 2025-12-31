@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
     origin: [
-        "http://localhost:3000",
+       // "http://localhost:3000",
         "https://atendimento-express.vercel.app",
     ],
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
@@ -24,7 +24,7 @@ const httpServer = http.createServer(app);
 const io = new IOServer(httpServer, {
     cors: {
         origin: [
-            "http://localhost:3000",
+           // "http://localhost:3000",
             "https://atendimento-express.vercel.app"
         ],
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
