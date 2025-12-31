@@ -15,8 +15,8 @@ app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em 
 
 app.use(cors({
     origin: [
-        "https://localhost:3000",
-        "https://atendimentoexpress-1kz00063s-projects.vercel.app",
+        "http://localhost:3000",
+        "https://atendimento-express.vercel.app",
     ],
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
     credentials: true,
@@ -27,9 +27,9 @@ const httpServer = http.createServer(app);
 const io = new IOServer(httpServer, {
     cors: {
         origin: [
-            "https://localhost:3000",
-            "https://atendimentoexpress-1kz00063s-projects.vercel.app",
-         ],
+            "http://localhost:3000",
+            "https://atendimento-express.vercel.app"
+        ],
     methods: ["GET", "POST"],
     }
 });
