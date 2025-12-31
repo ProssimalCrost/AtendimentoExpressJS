@@ -7,6 +7,10 @@ import {Server as IOServer} from "socket.io"
 
 
 const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(cors({
     origin: [
         "https://localhost:3000",
@@ -15,8 +19,7 @@ app.use(cors({
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
     credentials: true,
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
 app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
 
 /* Comando para iniciar o srvidor: node --run dev http://localhost:3000/atendimentos */ 
