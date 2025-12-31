@@ -21,6 +21,7 @@ export default function AtendimentosPage() {
     socket.connect();
 
     socket.on("attendance:new", (data: Atendimento) => {
+      console.log("Novo atendiemnto recebido via WebSockect:", data)
       setAtendimentos((prev) => [...prev, data]);
     });
 
