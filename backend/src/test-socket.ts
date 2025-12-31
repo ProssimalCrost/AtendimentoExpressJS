@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3000");
+const socket = io("https://atendimento-express.vercel.app");
 
 socket.on("attendance:new", (data) => {
   console.log("Novo atendimento:", data);
