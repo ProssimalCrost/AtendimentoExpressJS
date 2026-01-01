@@ -31,9 +31,9 @@ export default function PorteiroPage() {
 
     setName("");
     setDescription("");
-  } catch (err) {
+  /* }  catch (err) {
     alert("Erro ao salvar. Tente novamente.");
-    console.error(err);
+    console.error(err); */
   } finally {
     setLoading(false); // 🔑 SEMPRE EXECUTA
   }
