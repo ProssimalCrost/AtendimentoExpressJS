@@ -17,8 +17,12 @@ export default function AtendimentosPage() {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}`)
       .then((res) => res.json())
       .then((data) => setAtendimentos(data));
+      console.log("🔌 Conectando socket...");
 
-    socket.connect();
+
+    socket.on("connect", () => {
+    console.log("✅ Socket conectado:", socket.id);
+  });
 
     socket.on("attendance:new", (data: Atendimento) => {
       console.log("Novo atendiemnto recebido via WebSockect:", data)
@@ -34,8 +38,8 @@ export default function AtendimentosPage() {
     });
 
     return () => {
-      socket.disconnect();
-      socket.off();
+      socket.off("attendance:new");
+      socket.off("attendance:finished");
     };
   }, []);
 
