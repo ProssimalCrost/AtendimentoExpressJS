@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { socket } from "@/lib/socket";
+
 
 interface Atendimento {
   id: string;
@@ -19,30 +19,15 @@ export default function AtendimentosPage() {
       .then((data) => setAtendimentos(data));
       console.log("🔌 Conectando socket...");
 
-
-    socket.on("connect", () => {
-    console.log("✅ Socket conectado:", socket.id);
-  });
-
-    socket.on("attendance:new", (data: Atendimento) => {
-      console.log("Novo atendiemnto recebido via WebSockect:", data)
-      setAtendimentos((prev) => [...prev, data]);
-    });
-
-    socket.on("attendance:finished", ({ id }: { id: string }) => {
-      setAtendimentos((prev) =>
-        prev.map((a) =>
-          a.id === id ? { ...a, status: "finished" } : a
-        )
-      );
-    });
-
-    return () => {
-      socket.off("attendance:new");
-      socket.off("attendance:finished");
-    };
-  }, []);
-
+  async function loadAtendimentos() {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_API_URL + "/atendimentos"
+  );
+  const data = await res.json();
+  setAtendimentos(data);
+}
+},[]); 
+  
   const pendentes = atendimentos.filter(a => a.status === "pending");
   const finalizados = atendimentos.filter(a => a.status === "finished");
 
