@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { socket } from "@/lib/socket";
 
 
 interface Atendimento {
@@ -18,6 +19,33 @@ export default function AtendimentosPage() {
       .then((res) => res.json())
       .then((data) => setAtendimentos(data));
       console.log("🔌 Conectando socket...");
+
+    socket.on("connect", () => {
+    console.log("✅ Socket conectado:", socket.id);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("❌ Socket desconectado");
+  });
+
+  socket.on("attendance:new", (data) => {
+    console.log("📩 Novo atendimento", data);
+    setAtendimentos((prev) => [...prev, data]);
+  });
+
+  socket.on("attendance:finished", ({ id }) => {
+    console.log("📩 Atendimento finalizado", id);
+    setAtendimentos((prev) =>
+      prev.map((a) =>
+        a.id === id ? { ...a, status: "finished" } : a
+      )
+    );
+  });
+
+  return () => {
+    socket.off("attendance:new");
+    socket.off("attendance:finished");
+  };
 
   async function loadAtendimentos() {
   const res = await fetch(
