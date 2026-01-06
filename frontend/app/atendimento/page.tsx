@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { socket } from "@/lib/socket";
-
 
 interface Atendimento {
   id: string;
@@ -14,57 +12,36 @@ interface Atendimento {
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
 
+  async function loadAtendimentos() {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_API_URL + "/atendimentos?limit=50",
+      { cache: "no-store" }
+    );
+    const data = await res.json();
+    setAtendimentos(data);
+  }
+
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}`)
       .then((res) => res.json())
       .then((data) => setAtendimentos(data));
-      console.log("🔌 Conectando socket...");
 
-    socket.on("connect", () => {
-    console.log("✅ Socket conectado:", socket.id);
-  });
+    const interval = setInterval(() => {
+      loadAtendimentos();
+    }, 5000);
+    return () => clearInterval(interval);
 
-  socket.on("disconnect", () => {
-    console.log("❌ Socket desconectado");
-  });
+  }, []);
 
-  socket.on("attendance:new", (data) => {
-    console.log("📩 Novo atendimento", data);
-    setAtendimentos((prev) => [...prev, data]);
-  });
-
-  socket.on("attendance:finished", ({ id }) => {
-    console.log("📩 Atendimento finalizado", id);
-    setAtendimentos((prev) =>
-      prev.map((a) =>
-        a.id === id ? { ...a, status: "finished" } : a
-      )
-    );
-  });
-
-  return () => {
-    socket.off("attendance:new");
-    socket.off("attendance:finished");
-  };
-
-  async function loadAtendimentos() {
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_API_URL + "/atendimentos"
-  );
-  const data = await res.json();
-  setAtendimentos(data);
-}
-},[]); 
-  
   const pendentes = atendimentos.filter(a => a.status === "pending");
   const finalizados = atendimentos.filter(a => a.status === "finished");
 
   async function finalizarAtendimento(id: string) {
     await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/${id}/finish`,
-      {
-      method: "PATCH",
-    });
+      { method: "PATCH" }
+    );
+    loadAtendimentos()
   }
 
   return (
@@ -78,7 +55,7 @@ export default function AtendimentosPage() {
         {/* PENDENTES */}
         <section className="bg-white rounded-xl shadow p-6">
           <h2 className="text-xl font-semibold mb-4 text-yellow-600">
-             Pendentes ({pendentes.length})
+            Pendentes ({pendentes.length})
           </h2>
 
           <ul className="space-y-4">
@@ -116,7 +93,7 @@ export default function AtendimentosPage() {
         {/* FINALIZADOS */}
         <section className="bg-white rounded-xl shadow p-6">
           <h2 className="text-xl font-semibold mb-4 text-green-600">
-             Finalizados ({finalizados.length})
+            Finalizados ({finalizados.length})
           </h2>
 
           <ul className="space-y-4">

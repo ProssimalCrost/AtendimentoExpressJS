@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import loadAtendimentos from "../atendimento/page"
 
 export default function PorteiroPage() {
   const [name, setName] = useState("");
@@ -15,27 +16,14 @@ export default function PorteiroPage() {
 ///atendimentos
     try {
     const res =
-     await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, 
-      {
-        mode: "no-cors",
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, description: description || null }),
-      }
-    );
-   console.log("API:", process.env.NEXT_PUBLIC_API_URL);
 
-  /*  if (!res.ok) {
-      throw new Error("Erro ao salvar atendimento");
-    }*/
-
-    setName("");
-    setDescription("");
-  /* }  catch (err) {
-    alert("Erro ao salvar. Tente novamente.");
-    console.error(err); */
+     await loadAtendimentos();
+      console.log("API:", process.env.NEXT_PUBLIC_API_URL);
+      setName("");
+      setDescription("");
+    
   } finally {
-    setLoading(false); // 🔑 SEMPRE EXECUTA
+   // setLoading(false); // 🔑 SEMPRE EXECUTA
   }
 }
 
