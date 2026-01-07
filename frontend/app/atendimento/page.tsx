@@ -14,17 +14,17 @@ export default function AtendimentosPage() {
 
   async function loadAtendimentos() {
     const res = await fetch(
-      process.env.NEXT_PUBLIC_API_URL + "/atendimentos?limit=50",
+      `${process.env.NEXT_PUBLIC_API_URL}/atendimentos?limit=50`,
       { cache: "no-store" }
     );
+
     const data = await res.json();
-    setAtendimentos(data);
+
+    // garantia de array
+    setAtendimentos(Array.isArray(data) ? data : []);
   }
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}`)
-      .then((res) => res.json())
-      .then((data) => setAtendimentos(data));
 
     const interval = setInterval(() => {
       loadAtendimentos();
