@@ -17,7 +17,7 @@ export default function PorteiroPage() {
   try {
     // CRIA o atendimento
     await fetch(
-      process.env.NEXT_PUBLIC_API_URL + "/atendimentos",
+      process.env.NEXT_PUBLIC_API_URL + "/",
       {
         method: "POST",
         headers: {
