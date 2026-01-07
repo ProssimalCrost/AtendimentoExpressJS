@@ -9,23 +9,39 @@ export default function PorteiroPage() {
   const [loading, setLoading] = useState(false);
 
   async function criarAtendimento(e: React.FormEvent) {
-    e.preventDefault();
-    if (!name.trim()) return;
+  e.preventDefault();
+  if (!name.trim()) return;
 
-    setLoading(true);
-///atendimentos
-    try {
-    const res =
+  setLoading(true);
 
-     await loadAtendimentos();
-      console.log("API:", process.env.NEXT_PUBLIC_API_URL);
-      setName("");
-      setDescription("");
-    
+  try {
+    // CRIA o atendimento
+    await fetch(
+      process.env.NEXT_PUBLIC_API_URL + "/atendimentos",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          description: description || null,
+        }),
+      }
+    );
+
+    //  Limpa o formulário
+    setName("");
+    setDescription("");
+
+    // Atualiza a lista
+    await loadAtendimentos();
   } finally {
-    setLoading(false); // 🔑 SEMPRE EXECUTA
+    // Finaliza loading
+    setLoading(false);
   }
 }
+
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-200">
