@@ -23,7 +23,7 @@ export default function PorteiroPage() {
       setDescription("");
     
   } finally {
-   // setLoading(false); // 🔑 SEMPRE EXECUTA
+    setLoading(false); // 🔑 SEMPRE EXECUTA
   }
 }
 
