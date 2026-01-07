@@ -14,7 +14,7 @@ export default function AtendimentosPage() {
 
   async function loadAtendimentos() {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/atendimentos?limit=50`,
+      `${process.env.NEXT_PUBLIC_API_URL}`,
       { cache: "no-store" }
     );
 
