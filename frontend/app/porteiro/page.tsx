@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import loadAtendimentos from "../atendimento/page"
+import { useState } from "react";
+
 
 export default function PorteiroPage() {
   const [name, setName] = useState("");
@@ -33,11 +33,6 @@ export default function PorteiroPage() {
     //  Limpa o formulário
     setName("");
     setDescription("");
-
-    // Atualiza a lista
-    useEffect(() => {
-    loadAtendimentos();
-  }, []);
 
   } finally {
     // Finaliza loading
