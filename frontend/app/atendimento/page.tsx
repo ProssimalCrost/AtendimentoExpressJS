@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+
 interface Atendimento {
   id: string;
   name: string;
@@ -45,15 +46,15 @@ export default function AtendimentosPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold mb-8 text-center text-blue-600">
+    <main className="min-h-screen bg-white p-8  bg-[url('/images/bg1.png')] bg-center bg-cover bg-no-repeat">
+      <h1 className="text-3xl font-bold mb-8 text-center text-white-600">
         Sistema de Atendimentos
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
         {/* PENDENTES */}
-        <section className="bg-white rounded-xl shadow p-6">
+        <section className="bg-white rounded-xl shadow-xl p-8">
           <h2 className="text-xl font-semibold mb-4 text-yellow-600">
             Pendentes ({pendentes.length})
           </h2>
@@ -91,7 +92,7 @@ export default function AtendimentosPage() {
         </section>
 
         {/* FINALIZADOS */}
-        <section className="bg-white rounded-xl shadow p-6">
+        <section className="bg-white rounded-xl shadow-xl p-8">
           <h2 className="text-xl font-semibold mb-4 text-green-600">
             Finalizados ({finalizados.length})
           </h2>
