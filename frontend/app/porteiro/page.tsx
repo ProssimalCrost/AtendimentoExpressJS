@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import loadAtendimentos from "../atendimento/page"
 
 export default function PorteiroPage() {
@@ -35,7 +35,10 @@ export default function PorteiroPage() {
     setDescription("");
 
     // Atualiza a lista
-    await loadAtendimentos();
+    useEffect(() => {
+    loadAtendimentos();
+  }, []);
+
   } finally {
     // Finaliza loading
     setLoading(false);
