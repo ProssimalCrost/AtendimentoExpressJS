@@ -42,7 +42,7 @@ export default function PorteiroPage() {
 
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-200">
+    <main className="min-h-screen flex items-center justify-center bg-gray-200 bg-[url('/images/bg1.png')] bg-center bg-cover bg-no-repeat">
       <form
         onSubmit={criarAtendimento}
         className="bg-white p-12 rounded-xl shadow w-full max-w-md space-y-4"

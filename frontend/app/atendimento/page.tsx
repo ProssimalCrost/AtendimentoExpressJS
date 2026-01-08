@@ -46,7 +46,7 @@ export default function AtendimentosPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white p-8  bg-[url('/images/bg1.png')] bg-center bg-cover bg-no-repeat">
+    <main className="min-h-screen bg-white p-8 bg-[url('/images/bg1.png')] bg-center bg-cover bg-no-repeat">
       <h1 className="text-3xl font-bold mb-8 text-center text-white-600">
         Sistema de Atendimentos
       </h1>
