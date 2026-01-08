@@ -45,9 +45,9 @@ export default function PorteiroPage() {
     <main className="min-h-screen flex items-center justify-center bg-gray-200">
       <form
         onSubmit={criarAtendimento}
-        className="bg-white p-8 rounded-xl shadow w-full max-w-md space-y-4"
+        className="bg-white p-12 rounded-xl shadow w-full max-w-md space-y-4"
       >
-        <h1 className="text-2xl font-bold text-center text-black">
+        <h1 className="text-3xl font-bold text-center text-black">
           Registrar Atendimento
         </h1>
 
@@ -56,7 +56,7 @@ export default function PorteiroPage() {
           placeholder="Nome do cliente"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full border rounded px-3 py-2 text-gray-600"
+          className="w-full border rounded px-3 py-5 text-gray-600"
         />
 
         <input
@@ -64,12 +64,12 @@ export default function PorteiroPage() {
           placeholder="Descrição (opcional)"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full border rounded px-3 py-2 text-gray-600"
+          className="w-full border rounded px-3 py-5 text-gray-600"
         />
 
         <button
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-blue-600 text-white py-5 rounded hover:bg-blue-700 text-lg"
         >
           {loading ? "Salvando..." : "Adicionar"}
         </button>
