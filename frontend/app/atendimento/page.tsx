@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { socket } from "@/lib/socket";
 import { requestNotificationPermission, notifyNewAtendimento } from "@/app/utils/notifications";
+import { loadAtendimentos } from "@/app/services/atendimentoService";
 
 interface Atendimento {
   id: string;
@@ -17,13 +18,11 @@ export default function AtendimentosPage() {
 
   useEffect(() => {
     requestNotificationPermission();
-  }, []);
-
-  socket.on("novo-atendimento", (atendimento) => {
-   setAtendimentos(prev => [...prev, atendimento]);
+    socket.on("novo-atendimento", (atendimento) => {
+    setAtendimentos(prev => [...prev, atendimento]);
     notifyNewAtendimento(atendimento.name);
 });
-
+  }, []);
 
  ////////////////////////////////////////////////////////////////
 
@@ -47,7 +46,7 @@ export default function AtendimentosPage() {
       `${process.env.NEXT_PUBLIC_API_URL}/${id}/finish`,
       { method: "PATCH" }
     );
-    loadAtendimentos()
+     loadAtendimentos()
   }
 ///////////////////////////////////////////////////////////////////  
 
