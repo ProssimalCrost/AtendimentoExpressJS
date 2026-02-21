@@ -29,8 +29,8 @@ body {
   color: var(--foreground); */
   font-family: Arial, Helvetica, sans-serif;
   background-image: url("/images/bg2.png");
-  background-size: auto; 
+  background-size: 100%; 
   background-repeat: no-repeat;
-  background-position: center;
-  background-color: #061d45;
+  background-position: right;
+  background-color: #8f8f8f;
 }

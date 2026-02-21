@@ -4,12 +4,12 @@ import {router} from "./routes/atendimentos.js";
 import cors from "cors";
 import http from "http";
 import {Server as IOServer} from "socket.io"
-
+// é necessario import "dotenv/config" 
+// no topo deste arquivo para funcionar a variavel de ambiente .env
 const app = express();
 
 app.use(express.json({ type: "*/*" }));
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cors({
     origin: [
         "http://localhost:3333",
@@ -33,6 +33,9 @@ const io = new IOServer(httpServer, {
     }
 });
 
+io.on("connection", (socket) => {
+  console.log("✅ Cliente conectado:", socket.id);
+});
 
 io.on("connection", (socket) => {
     console.log("Cliente conectado:", socket.id);
@@ -49,5 +52,3 @@ httpServer.listen(PORT, () => {
   console.log(`Acesse: http://localhost:${PORT}/atendimentos`);
 });
 
-// é necessario import "dotenv/config" 
-// no topo deste arquivo para funcionar a variavel de ambiente .env

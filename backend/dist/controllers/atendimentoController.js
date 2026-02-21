@@ -2,8 +2,9 @@ import AttendimentoService from '../services/services.js';
 class AttendimentoController {
     // Criar atendimento
     async create(req, res) {
-        const { name, description, status } = req.body;
+        const { name, description, status } = req.body ?? {};
         console.log("REQ BODY REAL:", req.body);
+        console.log("➡️ POST /atendimentos recebido", req.body);
         // 1. validação
         if (!name || name.trim() === "") {
             return res.status(400).json({ error: "O nome é obrigatório." });
