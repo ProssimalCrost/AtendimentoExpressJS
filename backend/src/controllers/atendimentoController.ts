@@ -28,10 +28,10 @@ class AttendimentoController {
 
     async list(req: Request, res: Response) {
 
-        const limit = Number(req.query.limit) || 50;
-        const atendimentos = await AttendimentoService.list(limit)
+         //const limit = Number(req.query.limit) || 50;
+        const atendimentos = await AttendimentoService.list
 
-     //  const result = await AttendimentoService.list();
+     const result = await AttendimentoService.list();
 
         return res.status(200).json(atendimentos)
     };

@@ -12,3 +12,6 @@ força qual quer erro
 
 npx drizzle-kit studio
 abre o studio
+
+npm i tsx -D
+"dev": "tsx watch src/server.ts"

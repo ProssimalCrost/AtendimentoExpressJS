@@ -1,7 +1,7 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { socket } from "@/lib/socket";
+import { requestNotificationPermission, notifyNewAtendimento } from "@/app/utils/notifications";
 
 interface Atendimento {
   id: string;
@@ -13,6 +13,21 @@ interface Atendimento {
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
 
+  /////// Efeito de notificação para novos atendimentos ///////////
+
+  useEffect(() => {
+    requestNotificationPermission();
+  }, []);
+
+  socket.on("novo-atendimento", (atendimento) => {
+   setAtendimentos(prev => [...prev, atendimento]);
+    notifyNewAtendimento(atendimento.name);
+});
+
+
+ ////////////////////////////////////////////////////////////////
+
+ ///////////// Efeito para carregar atendimentos e escutar WebSocket /////////
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}`)
       .then((res) => res.json())
@@ -38,7 +53,9 @@ export default function AtendimentosPage() {
       socket.off();
     };
   }, []);
+////////////////////////////////////////////////////////
 
+//////////// Logica para separar atendimentos pendentes e finalizados ////////
   const pendentes = atendimentos.filter(a => a.status === "pending");
   const finalizados = atendimentos.filter(a => a.status === "finished");
 
@@ -49,6 +66,7 @@ export default function AtendimentosPage() {
       method: "PATCH",
     });
   }
+///////////////////////////////////////////////////////////////////  
 
   return (
     <main className="min-h-screen bg-gray-100 p-8">

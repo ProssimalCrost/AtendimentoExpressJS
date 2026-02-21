@@ -12,19 +12,21 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
     origin: [
-       // "http://localhost:3000",
+        "http://localhost:3333",
+        "http://localhost:3000",
         "https://atendimento-express.vercel.app",
     ],
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
     credentials: true,
 }));
 
-/* Comando para iniciar o srvidor: node --run dev http://localhost:3000/atendimentos */ 
+/* Comando para iniciar o servidor: node --run dev http://localhost:3333/atendimentos */ 
 const httpServer = http.createServer(app);
 const io = new IOServer(httpServer, {
     cors: {
         origin: [
-           // "http://localhost:3000",
+            "http://localhost:3333",
+            "http://localhost:3000",
             "https://atendimento-express.vercel.app"
         ],
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
@@ -44,6 +46,7 @@ const PORT = process.env.PORT || 3333;
 
 httpServer.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Acesse: http://localhost:${PORT}/atendimentos`);
 });
 
 // é necessario import "dotenv/config" 

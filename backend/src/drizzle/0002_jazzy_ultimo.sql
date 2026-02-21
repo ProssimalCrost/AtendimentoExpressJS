@@ -1,1 +1,0 @@
-ALTER TABLE "atendimentos" ALTER COLUMN "created_at" SET NOT NULL;
