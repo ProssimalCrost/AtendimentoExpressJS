@@ -1,6 +1,6 @@
 export async function loadAtendimentos() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/atendimentos`
+    `${process.env.NEXT_PUBLIC_API_URL}`
   );
 
   if (!response.ok) {
