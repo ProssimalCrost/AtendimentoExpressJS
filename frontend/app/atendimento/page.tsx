@@ -13,28 +13,41 @@ interface Atendimento {
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
 
- async function loadAtendimentos() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}`
-  );
+async function loadAtendimentos() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/atendimentos`
+    );
 
- if (!response.ok) return;
+    if (!response.ok) return;
 
-const text = await response.text();
+    const data = await response.json();
 
-if (!text) return;
-
-const data = JSON.parse(text);
+    setAtendimentos(data);
+  } catch (error) {
+    console.error("Erro ao carregar atendimentos:", error);
+  }
 } 
 
   /////// Efeito de notificação para novos atendimentos ///////////
 
-  useEffect(() => {
-    socket.on("novo-atendimento", (atendimento) => {
+useEffect(() => {
+  const handler = (atendimento: Atendimento) => {
     setAtendimentos(prev => [...prev, atendimento]);
-});
-  }, []);
 
+    if (Notification.permission === "granted") {
+      new Notification("Novo Atendimento!", {
+        body: atendimento.name,
+      });
+    }
+  };
+
+  socket.on("novo-atendimento", handler);
+
+  return () => {
+    socket.off("novo-atendimento", handler);
+  };
+}, []);
  ////////////////////////////////////////////////////////////////
 
  ///////////// Efeito para carregar atendimentos e escutar WebSocket /////////

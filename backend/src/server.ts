@@ -14,7 +14,7 @@ app.use(cors({
     origin: [
         //"http://localhost:3333",
       //  "http://localhost:3000",
-        "https://atendimento-express.vercel.app",
+        "https://atendimento-express.vercel.app"
     ],
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
     credentials: true,
@@ -49,6 +49,5 @@ const PORT = process.env.PORT || 3333;
 
 httpServer.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
-  console.log(`Acesse: http://localhost:${PORT}/atendimentos`);
 });
 
