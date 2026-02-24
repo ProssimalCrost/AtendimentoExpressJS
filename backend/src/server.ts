@@ -1,55 +1,89 @@
 import "dotenv/config";
 import express from "express";
-import {router} from "./routes/atendimentos.js";
 import cors from "cors";
 import http from "http";
-import {Server as IOServer} from "socket.io"
-// é necessario import "dotenv/config" 
-// no topo deste arquivo para funcionar a variavel de ambiente .env
+import { Server as IOServer } from "socket.io";
+import { router } from "./routes/atendimentos.js";
+
 const app = express();
-
-app.use(express.json({ type: "*/*" }));
-app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-    origin: [
-        //"http://localhost:3333",
-      //  "http://localhost:3000",
-        "https://atendimento-express.vercel.app"
-    ],
-    methods: ["GET", "POST", "PATCH", "OPTIONS"],
-    credentials: true,
-}));
-
-/* Comando para iniciar o servidor: node --run dev http://localhost:3333/atendimentos */ 
 const httpServer = http.createServer(app);
-const io = new IOServer(httpServer, {
-    cors: {
-        origin: [
-           // "http://localhost:3333",
-           // "http://localhost:3000",
-            "https://atendimento-express.vercel.app"
-        ],
-    methods: ["GET", "POST", "PATCH", "OPTIONS"],
+
+// =======================
+// 🌎 AMBIENTE
+// =======================
+
+const PORT = process.env.PORT || 3333;
+const NODE_ENV = process.env.NODE_ENV || "development";
+const FRONTEND_URL = process.env.FRONTEND_URL;
+
+// =======================
+// 🔐 CORS INTELIGENTE
+// =======================
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3333",
+  FRONTEND_URL,
+];
+
+const corsOptions = {
+  origin: (origin: string | undefined,
+    callback: (err: Error | null, allow?: boolean) => void) => {
+    // Permite requests sem origin (Postman etc)
+    if (!origin) return callback(null, true);
+
+    // Permite localhost
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
+
+    // Permite qualquer deploy preview do Vercel
+    if (/\.vercel\.app$/.test(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("❌ CORS bloqueado"));
+  },
+  methods: ["GET", "POST", "PATCH", "OPTIONS"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// =======================
+// 🔌 SOCKET.IO
+// =======================
+
+const io = new IOServer(httpServer, {
+  cors: corsOptions,
 });
 
 io.on("connection", (socket) => {
   console.log("✅ Cliente conectado:", socket.id);
+
+  socket.on("disconnect", () => {
+    console.log("❌ Cliente desconectado:", socket.id);
+  });
 });
 
-io.on("connection", (socket) => {
-    console.log("Cliente conectado:", socket.id);
-});
+export { io };
 
-export {io};
+// =======================
+// 📡 ROTAS
+// =======================
 
-app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
+app.use("/atendimentos", router);
 
-const PORT = process.env.PORT || 3333;
+// =======================
+// 🚀 START SERVER
+// =======================
 
 httpServer.listen(PORT, () => {
-  console.log(process.env.NEXT_PUBLIC_API_URL);
-  console.log(`Servidor rodando na porta ${PORT}`);
-  console.log(`teste ${PORT} API URl: ${process.env.NEXT_PUBLIC_API_URL}`)
+  console.log("=================================");
+  console.log(` Ambiente: ${NODE_ENV}`);
+  console.log(` Porta: ${PORT}`);
+  console.log(` Frontend URL: ${FRONTEND_URL}`);
+  console.log("=================================");
 });
-
