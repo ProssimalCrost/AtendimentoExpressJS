@@ -27,27 +27,39 @@ export default function AtendimentosPage() {
  ////////////////////////////////////////////////////////////////
 
  ///////////// Efeito para carregar atendimentos e escutar WebSocket /////////
-  useEffect(() => {
+ useEffect(() => {
 
-    const interval = setInterval(() => {
-      loadAtendimentos();
-    }, 2000);
-    return () => clearInterval(interval);
+  async function fetchAtendimentos() {
+    try {
+      const data = await loadAtendimentos();
+      setAtendimentos(data);
+    } catch (err) {
+      console.error("Erro ao carregar:", err);
+    }
+  }
 
-  }, []);
+  fetchAtendimentos(); // primeira carga
+
+  const interval = setInterval(fetchAtendimentos, 2000);
+
+  return () => clearInterval(interval);
+
+}, []);
 ////////////////////////////////////////////////////////
 
 //////////// Logica para separar atendimentos pendentes e finalizados ////////
   const pendentes = atendimentos.filter(a => a.status === "pending");
   const finalizados = atendimentos.filter(a => a.status === "finished");
 
-  async function finalizarAtendimento(id: string) {
-    await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/${id}/finish`,
-      { method: "PATCH" }
-    );
-     loadAtendimentos()
-  }
+async function finalizarAtendimento(id: string) {
+  await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/${id}/finish`,
+    { method: "PATCH" }
+  );
+
+  const data = await loadAtendimentos();
+  setAtendimentos(data);
+}
 ///////////////////////////////////////////////////////////////////  
 
   return (

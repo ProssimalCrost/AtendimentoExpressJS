@@ -1,11 +1,12 @@
 export async function loadAtendimentos() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/atendimentos`
+    `${process.env.NEXT_PUBLIC_API_URL}`
   );
 
   if (!response.ok) {
     throw new Error("Erro ao carregar atendimentos");
   }
 
-  return response.json();
+  const text = await response.text();
+  return text ? JSON.parse(text) : [];
 }
