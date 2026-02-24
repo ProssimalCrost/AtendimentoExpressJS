@@ -48,6 +48,7 @@ app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em 
 const PORT = process.env.PORT || 3333;
 
 httpServer.listen(PORT, () => {
+  console.log(process.env.NEXT_PUBLIC_API_URL);
   console.log(`Servidor rodando na porta ${PORT}`);
 });
 

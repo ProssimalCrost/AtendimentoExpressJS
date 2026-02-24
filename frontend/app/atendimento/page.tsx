@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { socket } from "@/lib/socket";
-//import { loadAtendimentos } from "@/app/services/atendimentoService";
 
 interface Atendimento {
   id: string;
@@ -19,15 +18,26 @@ async function loadAtendimentos() {
       `${process.env.NEXT_PUBLIC_API_URL}`
     );
 
-    if (!response.ok) return;
+    if (!response.ok) {
+      console.error("Erro HTTP:", response.status);
+      return;
+    }
 
-    const data = await response.json();
+    const text = await response.text();
+
+    if (!text) {
+      setAtendimentos([]);
+      return;
+    }
+
+    const data = JSON.parse(text);
 
     setAtendimentos(data);
   } catch (error) {
     console.error("Erro ao carregar atendimentos:", error);
+    setAtendimentos([]);
   }
-} 
+}
 
   /////// Efeito de notificação para novos atendimentos ///////////
 
