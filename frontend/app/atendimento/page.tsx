@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { socket } from "@/lib/socket";
 import { requestNotificationPermission, notifyNewAtendimento } from "@/app/utils/notifications";
-import { loadAtendimentos } from "@/app/services/atendimentoService";
 
 interface Atendimento {
   id: string;
@@ -18,62 +17,69 @@ export default function AtendimentosPage() {
 
   useEffect(() => {
     requestNotificationPermission();
-    socket.on("novo-atendimento", (atendimento) => {
-    setAtendimentos(prev => [...prev, atendimento]);
+  }, []);
+
+  socket.on("novo-atendimento", (atendimento) => {
+   setAtendimentos(prev => [...prev, atendimento]);
     notifyNewAtendimento(atendimento.name);
 });
-  }, []);
+
 
  ////////////////////////////////////////////////////////////////
 
  ///////////// Efeito para carregar atendimentos e escutar WebSocket /////////
- useEffect(() => {
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}`)
+      .then((res) => res.json())
+      .then((data) => setAtendimentos(data));
 
-  async function fetchAtendimentos() {
-    try {
-      const data = await loadAtendimentos();
-      setAtendimentos(data);
-    } catch (err) {
-      console.error("Erro ao carregar:", err);
-    }
-  }
+    socket.connect();
 
-  fetchAtendimentos(); // primeira carga
+    socket.on("attendance:new", (data: Atendimento) => {
+      console.log("Novo atendiemnto recebido via WebSockect:", data)
+      setAtendimentos((prev) => [...prev, data]);
+    });
 
-  const interval = setInterval(fetchAtendimentos, 2000);
+    socket.on("attendance:finished", ({ id }: { id: string }) => {
+      setAtendimentos((prev) =>
+        prev.map((a) =>
+          a.id === id ? { ...a, status: "finished" } : a
+        )
+      );
+    });
 
-  return () => clearInterval(interval);
-
-}, []);
+    return () => {
+      socket.disconnect();
+      socket.off();
+    };
+  }, []);
 ////////////////////////////////////////////////////////
 
 //////////// Logica para separar atendimentos pendentes e finalizados ////////
   const pendentes = atendimentos.filter(a => a.status === "pending");
   const finalizados = atendimentos.filter(a => a.status === "finished");
 
-async function finalizarAtendimento(id: string) {
-  await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/${id}/finish`,
-    { method: "PATCH" }
-  );
-
-  const data = await loadAtendimentos();
-  setAtendimentos(data);
-}
+  async function finalizarAtendimento(id: string) {
+    await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/${id}/finish`,
+      {
+      method: "PATCH",
+    });
+  }
 ///////////////////////////////////////////////////////////////////  
 
   return (
-    <main className="min-h-screen bg-white p-8 bg-[url('/images/bg1.png')] bg-center bg-cover bg-no-repeat">
-      <h1 className="text-3xl font-bold mb-8 text-center text-white-600">
+    <main className="min-h-screen bg-gray-100 p-8">
+      <h1 className="text-3xl font-bold mb-8 text-center text-blue-600">
         Sistema de Atendimentos
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
         {/* PENDENTES */}
-        <section className="bg-white rounded-xl shadow-xl p-8">
+        <section className="bg-white rounded-xl shadow p-6">
           <h2 className="text-xl font-semibold mb-4 text-yellow-600">
-            Pendentes ({pendentes.length})
+             Pendentes ({pendentes.length})
           </h2>
 
           <ul className="space-y-4">
@@ -109,9 +115,9 @@ async function finalizarAtendimento(id: string) {
         </section>
 
         {/* FINALIZADOS */}
-        <section className="bg-white rounded-xl shadow-xl p-8">
+        <section className="bg-white rounded-xl shadow p-6">
           <h2 className="text-xl font-semibold mb-4 text-green-600">
-            Finalizados ({finalizados.length})
+             Finalizados ({finalizados.length})
           </h2>
 
           <ul className="space-y-4">
