@@ -3,9 +3,11 @@ export async function loadAtendimentos() {
     `${process.env.NEXT_PUBLIC_API_URL}`
   );
 
-  if (!response.ok) {
-    throw new Error("Erro ao carregar atendimentos");
-  }
+ if (!response.ok) return;
 
-  return response.json();
+const text = await response.text();
+
+if (!text) return;
+
+const data = JSON.parse(text);
 }

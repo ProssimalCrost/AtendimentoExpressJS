@@ -1,8 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { socket } from "@/lib/socket";
-import { requestNotificationPermission, notifyNewAtendimento } from "@/app/utils/notifications";
-import { loadAtendimentos } from "@/app/services/atendimentoService";
+//import { loadAtendimentos } from "@/app/services/atendimentoService";
 
 interface Atendimento {
   id: string;
@@ -14,13 +13,25 @@ interface Atendimento {
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
 
+ async function loadAtendimentos() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}`
+  );
+
+ if (!response.ok) return;
+
+const text = await response.text();
+
+if (!text) return;
+
+const data = JSON.parse(text);
+} 
+
   /////// Efeito de notificação para novos atendimentos ///////////
 
   useEffect(() => {
-    requestNotificationPermission();
     socket.on("novo-atendimento", (atendimento) => {
     setAtendimentos(prev => [...prev, atendimento]);
-    notifyNewAtendimento(atendimento.name);
 });
   }, []);
 
