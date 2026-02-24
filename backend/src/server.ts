@@ -50,5 +50,6 @@ const PORT = process.env.PORT || 3333;
 httpServer.listen(PORT, () => {
   console.log(process.env.NEXT_PUBLIC_API_URL);
   console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`teste ${PORT} API URl: ${process.env.NEXT_PUBLIC_API_URL}`)
 });
 
