@@ -1,7 +1,8 @@
 "use client";
-
 import { useEffect, useState } from "react";
-
+import { socket } from "@/lib/socket";
+import { requestNotificationPermission, notifyNewAtendimento } from "@/app/utils/notifications";
+import { loadAtendimentos } from "@/app/services/atendimentoService";
 
 interface Atendimento {
   id: string;
@@ -13,18 +14,19 @@ interface Atendimento {
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
 
-  async function loadAtendimentos() {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}`,
-      { cache: "no-store" }
-    );
+  /////// Efeito de notificação para novos atendimentos ///////////
 
-    const data = await res.json();
+  useEffect(() => {
+    requestNotificationPermission();
+    socket.on("novo-atendimento", (atendimento) => {
+    setAtendimentos(prev => [...prev, atendimento]);
+    notifyNewAtendimento(atendimento.name);
+});
+  }, []);
 
-    // garantia de array
-    setAtendimentos(Array.isArray(data) ? data : []);
-  }
+ ////////////////////////////////////////////////////////////////
 
+ ///////////// Efeito para carregar atendimentos e escutar WebSocket /////////
   useEffect(() => {
 
     const interval = setInterval(() => {
@@ -33,7 +35,9 @@ export default function AtendimentosPage() {
     return () => clearInterval(interval);
 
   }, []);
+////////////////////////////////////////////////////////
 
+//////////// Logica para separar atendimentos pendentes e finalizados ////////
   const pendentes = atendimentos.filter(a => a.status === "pending");
   const finalizados = atendimentos.filter(a => a.status === "finished");
 
@@ -42,8 +46,9 @@ export default function AtendimentosPage() {
       `${process.env.NEXT_PUBLIC_API_URL}/${id}/finish`,
       { method: "PATCH" }
     );
-    loadAtendimentos()
+     loadAtendimentos()
   }
+///////////////////////////////////////////////////////////////////  
 
   return (
     <main className="min-h-screen bg-white p-8 bg-[url('/images/bg1.png')] bg-center bg-cover bg-no-repeat">

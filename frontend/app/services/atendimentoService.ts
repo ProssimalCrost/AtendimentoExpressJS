@@ -7,6 +7,5 @@ export async function loadAtendimentos() {
     throw new Error("Erro ao carregar atendimentos");
   }
 
-  const text = await response.text();
-  return text ? JSON.parse(text) : [];
+  return response.json();
 }
