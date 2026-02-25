@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+//import { requestNotificationPermission, notifyNewAtendimento } from "@/app/utils/notifications";
 
 interface Atendimento {
   id: string;
@@ -18,7 +18,7 @@ export default function AtendimentosPage() {
       `${process.env.NEXT_PUBLIC_API_URL}`,
       { cache: "no-store" }
     );
-
+    
     const data = await res.json();
 
     // garantia de array
