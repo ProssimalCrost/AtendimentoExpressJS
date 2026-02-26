@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-import { socket } from "@/lib/socket";
+import { useEffect, useRef, useState } from "react";
 
 interface Atendimento {
   id: string;
@@ -11,68 +10,74 @@ interface Atendimento {
 
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
+  const atendimentosRef = useRef<Atendimento[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
-async function loadAtendimentos() {
-  console.log(process.env.NEXT_PUBLIC_API_URL);
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}`
-    );
-
-    if (!response.ok) {
-      console.error("Erro HTTP:", response.status);
-      return;
-    }
-
-    const text = await response.text();
-
-    if (!text) {
-      setAtendimentos([]);
-      return;
-    }
-
-    const data = JSON.parse(text);
-
-    setAtendimentos(data);
-  } catch (error) {
-    console.error("Erro ao carregar atendimentos:", error);
-    setAtendimentos([]);
-  }
-}
-
-  /////// Efeito de notificação para novos atendimentos ///////////
-
-useEffect(() => {
-  const handler = (atendimento: Atendimento) => {
-    setAtendimentos(prev => [...prev, atendimento]);
-
+  // Função de notificação
+  function notifyNovoAtendimento(atendimento: Atendimento) {
     if (Notification.permission === "granted") {
       new Notification("Novo Atendimento!", {
         body: atendimento.name,
       });
     }
-  };
 
-  socket.on("novo-atendimento", handler);
+    if (audioRef.current) {
+      audioRef.current.play().catch(() => {});
+    }
+  }
 
-  return () => {
-    socket.off("novo-atendimento", handler);
-  };
-}, []);
- ////////////////////////////////////////////////////////////////
+  async function loadAtendimentos() {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}`,
+        { cache: "no-store" }
+      );
 
- ///////////// Efeito para carregar atendimentos e escutar WebSocket /////////
+      if (!response.ok) return;
+
+      const data: Atendimento[] = await response.json();
+
+      // 🔥 compara atendimentos novos
+      const antigosIds = atendimentosRef.current.map(a => a.id);
+
+      const novos = data.filter(a => !antigosIds.includes(a.id));
+
+      if (novos.length > 0) {
+        novos.forEach(novo => notifyNovoAtendimento(novo));
+      }
+
+      atendimentosRef.current = data;
+      setAtendimentos(data);
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // Permissão + desbloqueio do som
   useEffect(() => {
+    audioRef.current = new Audio("/alert.mp3");
+
+    const enableAudio = () => {
+      Notification.requestPermission();
+      audioRef.current?.play().catch(() => {});
+      window.removeEventListener("click", enableAudio);
+    };
+
+    window.addEventListener("click", enableAudio);
+  }, []);
+
+  // Polling a cada 2s
+  useEffect(() => {
+    loadAtendimentos();
 
     const interval = setInterval(() => {
       loadAtendimentos();
     }, 2000);
+
     return () => clearInterval(interval);
-
   }, []);
-////////////////////////////////////////////////////////
 
-//////////// Logica para separar atendimentos pendentes e finalizados ////////
   const pendentes = atendimentos.filter(a => a.status === "pending");
   const finalizados = atendimentos.filter(a => a.status === "finished");
 
@@ -81,9 +86,8 @@ useEffect(() => {
       `${process.env.NEXT_PUBLIC_API_URL}/${id}/finish`,
       { method: "PATCH" }
     );
-     loadAtendimentos()
+    loadAtendimentos();
   }
-///////////////////////////////////////////////////////////////////  
 
   return (
     <main className="min-h-screen bg-white p-8 bg-[url('/images/bg1.png')] bg-center bg-cover bg-no-repeat">
@@ -93,7 +97,6 @@ useEffect(() => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-        {/* PENDENTES */}
         <section className="bg-white rounded-xl shadow-xl p-8">
           <h2 className="text-xl font-semibold mb-4 text-yellow-600">
             Pendentes ({pendentes.length})
@@ -101,16 +104,11 @@ useEffect(() => {
 
           <ul className="space-y-4">
             {pendentes.map((a) => (
-              <li
-                key={a.id}
-                className="border rounded-lg p-4 flex justify-between items-start"
-              >
+              <li key={a.id} className="border rounded-lg p-4 flex justify-between items-start">
                 <div>
                   <p className="font-medium text-blue-600">{a.name}</p>
                   {a.description && (
-                    <p className="text-sm text-gray-500">
-                      {a.description}
-                    </p>
+                    <p className="text-sm text-gray-500">{a.description}</p>
                   )}
                 </div>
 
@@ -131,7 +129,6 @@ useEffect(() => {
           </ul>
         </section>
 
-        {/* FINALIZADOS */}
         <section className="bg-white rounded-xl shadow-xl p-8">
           <h2 className="text-xl font-semibold mb-4 text-green-600">
             Finalizados ({finalizados.length})
@@ -139,15 +136,10 @@ useEffect(() => {
 
           <ul className="space-y-4">
             {finalizados.map((a) => (
-              <li
-                key={a.id}
-                className="border rounded-lg p-4 bg-green-50"
-              >
+              <li key={a.id} className="border rounded-lg p-4 bg-green-50">
                 <p className="font-medium text-green-600">{a.name}</p>
                 {a.description && (
-                  <p className="text-sm text-gray-500">
-                    {a.description}
-                  </p>
+                  <p className="text-sm text-gray-500">{a.description}</p>
                 )}
               </li>
             ))}
