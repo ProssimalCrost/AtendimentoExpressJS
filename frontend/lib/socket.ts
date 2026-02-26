@@ -10,3 +10,8 @@ export const socket = io(
     reconnectionDelay: 1000,
   }
 );
+<<<<<<< Updated upstream
+=======
+// Verificar se ultiliza o socket
+// socket na oconecta
+>>>>>>> Stashed changes
