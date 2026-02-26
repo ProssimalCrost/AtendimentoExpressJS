@@ -52,23 +52,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// =======================
-// 🔌 SOCKET.IO
-// =======================
-
-const io = new IOServer(httpServer, {
-  cors: corsOptions,
-});
-
-io.on("connection", (socket) => {
-  console.log("✅ Cliente conectado:", socket.id);
-
-  socket.on("disconnect", () => {
-    console.log("❌ Cliente desconectado:", socket.id);
-  });
-});
-
-export { io };
 
 // =======================
 // 📡 ROTAS
