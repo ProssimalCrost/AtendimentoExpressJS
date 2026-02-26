@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-//import { requestNotificationPermission, notifyNewAtendimento } from "@/app/utils/notifications";
+import { useEffect, useState, useRef } from "react";
+import { notifyNewAtendimento } from "@/utils/notify";
 
 interface Atendimento {
   id: string;
@@ -12,27 +12,40 @@ interface Atendimento {
 
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
+  const lastCountRef = useRef(0);
 
   async function loadAtendimentos() {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}`,
-      { cache: "no-store" }
-    );
-    
-    const data = await res.json();
+    `${process.env.NEXT_PUBLIC_API_URL}`,
+    { cache: "no-store" }
+  );
 
-    // garantia de array
-    setAtendimentos(Array.isArray(data) ? data : []);
+  const data = await res.json();
+  const lista = Array.isArray(data) ? data : [];
+
+  // 🚨 VERIFICA SE CHEGOU NOVO
+  if (lista.length > lastCountRef.current) {
+    notifyNewAtendimento();
   }
+
+  // Atualiza o contador
+  lastCountRef.current = lista.length;
+
+  setAtendimentos(lista);
+}
+
 
   useEffect(() => {
 
-    const interval = setInterval(() => {
-      loadAtendimentos();
-    }, 2000);
-    return () => clearInterval(interval);
+  Notification.requestPermission();
 
-  }, []);
+  const interval = setInterval(() => {
+    loadAtendimentos();
+  }, 2000);
+
+  return () => clearInterval(interval);
+
+}, []);
 
   const pendentes = atendimentos.filter(a => a.status === "pending");
   const finalizados = atendimentos.filter(a => a.status === "finished");
@@ -45,6 +58,11 @@ export default function AtendimentosPage() {
     loadAtendimentos()
   }
 
+useEffect(() => {
+  if ("Notification" in window) {
+    Notification.requestPermission();
+  }
+}, []);
   return (
     <main className="min-h-screen bg-white p-8 bg-[url('/images/bg1.png')] bg-center bg-cover bg-no-repeat">
       <h1 className="text-3xl font-bold mb-8 text-center text-white-600">
