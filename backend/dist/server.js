@@ -45,7 +45,7 @@ const corsOptions = {
 app.use((0, cors_1.default)(corsOptions));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-// =======================
+// ========================
 // 📡 ROTAS
 // =======================
 app.use("/atendimentos", atendimentos_js_1.router);
