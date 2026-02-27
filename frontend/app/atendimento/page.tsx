@@ -14,13 +14,23 @@ export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
   const lastCountRef = useRef(0);
 
-  ////   CARREGA ATENDIMENTOS //// 
+/////  CARREGA ATENDIMENTOS //// 
   async function loadAtendimentos() {
     const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}`,
     { cache: "no-store" }
   );
 
+  if (!res.ok) {
+    console.error("Error na API:", res.status);
+    return;
+  }
+
+  const text = await res.text();
+  if (!text){
+    console.warn("Resposta vazia da API");
+    return;
+  }
   const data = await res.json();
   const lista = Array.isArray(data) ? data : [];
 
@@ -34,14 +44,13 @@ export default function AtendimentosPage() {
 
   setAtendimentos(lista);
 }
-
+/////   CARREGA ATENDIMENTOS //// 
 const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     audioRef.current = new Audio("/alert.mp3");
 
     const enableAudio = () => {
-      Notification.requestPermission();
       audioRef.current?.play().catch(() => {});
       window.removeEventListener("click", enableAudio);
     };
@@ -53,8 +62,6 @@ const audioRef = useRef<HTMLAudioElement | null>(null);
   // Polling a cada 2s
   useEffect(() => {
     loadAtendimentos();
-
-  Notification.requestPermission();
 
   const interval = setInterval(() => {
     loadAtendimentos();
