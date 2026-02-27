@@ -44,11 +44,11 @@ export default function AtendimentosPage() {
 
   setAtendimentos(lista);
 }
-/////   CARREGA ATENDIMENTOS //// 
+///////////////////////////////// 
 const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    audioRef.current = new Audio("/alert.mp3");
+    audioRef.current = new Audio("/sounds/alert.mp3");
 
     const enableAudio = () => {
       audioRef.current?.play().catch(() => {});
