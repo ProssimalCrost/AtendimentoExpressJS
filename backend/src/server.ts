@@ -13,6 +13,9 @@ app.use(cors({
     origin: [
         "http://localhost:3000",
         "https://atendimento-express.vercel.app",
+        "https://atendimento-express.vercel.app/atendimento",
+        "https://atendimento-express.vercel.app",
+
     ],
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
     credentials: true,
@@ -35,6 +38,9 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3333",
   FRONTEND_URL,
+  "https://atendimento-express.vercel.app/atendimento",
+  "https://atendimento-express.vercel.app",
+
 ];
 
 const corsOptions = {
