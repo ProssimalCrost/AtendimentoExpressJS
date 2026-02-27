@@ -14,6 +14,7 @@ export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
   const lastCountRef = useRef(0);
 
+  ////   CARREGA ATENDIMENTOS //// 
   async function loadAtendimentos() {
     const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}`,
