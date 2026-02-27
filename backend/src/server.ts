@@ -7,9 +7,21 @@ import { router } from "./routes/atendimentos.js";
 const app = express();
 const httpServer = http.createServer(app);
 
-// =======================
-// 🌎 AMBIENTE
-// =======================
+app.use(express.json({ type: "*/*" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+    origin: [
+        "http://localhost:3000",
+        "https://atendimento-express.vercel.app",
+    ],
+    methods: ["GET", "POST", "PATCH", "OPTIONS"],
+    credentials: true,
+}));
+
+/* Comando para iniciar o srvidor: node --run dev http://localhost:3000/atendimentos */ 
+const server = http.createServer(app);
+
+app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
 
 const PORT = process.env.PORT || 3333;
 const NODE_ENV = process.env.NODE_ENV || "development";

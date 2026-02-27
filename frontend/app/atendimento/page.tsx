@@ -1,5 +1,7 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+
+import { useEffect, useState, useRef, } from "react";
+import { notifyNewAtendimento } from "@/utils/notify";
 
 interface Atendimento {
   id: string;
@@ -10,51 +12,30 @@ interface Atendimento {
 
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
-  const atendimentosRef = useRef<Atendimento[]>([]);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // Função de notificação
-  function notifyNovoAtendimento(atendimento: Atendimento) {
-    if (Notification.permission === "granted") {
-      new Notification("Novo Atendimento!", {
-        body: atendimento.name,
-      });
-    }
-
-    if (audioRef.current) {
-      audioRef.current.play().catch(() => {});
-    }
-  }
+  const lastCountRef = useRef(0);
 
   async function loadAtendimentos() {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}`,
-        { cache: "no-store" }
-      );
+    const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}`,
+    { cache: "no-store" }
+  );
 
-      if (!response.ok) return;
+  const data = await res.json();
+  const lista = Array.isArray(data) ? data : [];
 
-      const data: Atendimento[] = await response.json();
-
-      // 🔥 compara atendimentos novos
-      const antigosIds = atendimentosRef.current.map(a => a.id);
-
-      const novos = data.filter(a => !antigosIds.includes(a.id));
-
-      if (novos.length > 0) {
-        novos.forEach(novo => notifyNovoAtendimento(novo));
-      }
-
-      atendimentosRef.current = data;
-      setAtendimentos(data);
-
-    } catch (error) {
-      console.error(error);
-    }
+  // 🚨 VERIFICA SE CHEGOU NOVO
+  if (lista.length > lastCountRef.current) {
+    notifyNewAtendimento();
   }
 
-  // Permissão + desbloqueio do som
+  // Atualiza o contador
+  lastCountRef.current = lista.length;
+
+  setAtendimentos(lista);
+}
+
+const audioRef = useRef<HTMLAudioElement | null>(null);
+
   useEffect(() => {
     audioRef.current = new Audio("/alert.mp3");
 
@@ -63,6 +44,7 @@ export default function AtendimentosPage() {
       audioRef.current?.play().catch(() => {});
       window.removeEventListener("click", enableAudio);
     };
+    
 
     window.addEventListener("click", enableAudio);
   }, []);
@@ -71,12 +53,15 @@ export default function AtendimentosPage() {
   useEffect(() => {
     loadAtendimentos();
 
-    const interval = setInterval(() => {
-      loadAtendimentos();
-    }, 2000);
+  Notification.requestPermission();
 
-    return () => clearInterval(interval);
-  }, []);
+  const interval = setInterval(() => {
+    loadAtendimentos();
+  }, 2000);
+
+  return () => clearInterval(interval);
+
+}, []);
 
   const pendentes = atendimentos.filter(a => a.status === "pending");
   const finalizados = atendimentos.filter(a => a.status === "finished");
@@ -89,6 +74,11 @@ export default function AtendimentosPage() {
     loadAtendimentos();
   }
 
+useEffect(() => {
+  if ("Notification" in window) {
+    Notification.requestPermission();
+  }
+}, []);
   return (
     <main className="min-h-screen bg-white p-8 bg-[url('/images/bg1.png')] bg-center bg-cover bg-no-repeat">
       <h1 className="text-3xl font-bold mb-8 text-center text-white-600">
@@ -106,6 +96,7 @@ export default function AtendimentosPage() {
             {pendentes.map((a) => (
               <li key={a.id} className="border rounded-lg p-4 flex justify-between items-start">
                 <div>
+
                   <p className="font-medium text-blue-600">{a.name}</p>
                   {a.description && (
                     <p className="text-sm text-gray-500">{a.description}</p>

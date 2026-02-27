@@ -10,3 +10,4 @@ export const socket = io(
     reconnectionDelay: 1000,
   }
 );
+// Verificar se ultiliza o socket

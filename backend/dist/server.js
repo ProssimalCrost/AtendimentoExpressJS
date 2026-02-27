@@ -10,9 +10,19 @@ const http_1 = __importDefault(require("http"));
 const atendimentos_js_1 = require("./routes/atendimentos.js");
 const app = (0, express_1.default)();
 const httpServer = http_1.default.createServer(app);
-// =======================
-// 🌎 AMBIENTE
-// =======================
+app.use(express_1.default.json({ type: "*/*" }));
+app.use(express_1.default.urlencoded({ extended: true }));
+app.use((0, cors_1.default)({
+    origin: [
+        "http://localhost:3000",
+        "https://atendimento-express.vercel.app",
+    ],
+    methods: ["GET", "POST", "PATCH", "OPTIONS"],
+    credentials: true,
+}));
+/* Comando para iniciar o srvidor: node --run dev http://localhost:3000/atendimentos */
+const server = http_1.default.createServer(app);
+app.use("/atendimentos", atendimentos_js_1.router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */
 const PORT = process.env.PORT || 3333;
 const NODE_ENV = process.env.NODE_ENV || "development";
 const FRONTEND_URL = process.env.FRONTEND_URL;
