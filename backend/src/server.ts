@@ -86,5 +86,6 @@ httpServer.listen(PORT, () => {
   console.log(` Porta: ${PORT}`);
   console.log(` Frontend URL: ${FRONTEND_URL}`);
   console.log(`teste:${process.env.TESTE}`);
+  console.log(`DATABASE_URL: ${process.env.DATABASE_URL}`);
   console.log("=================================");
 });
