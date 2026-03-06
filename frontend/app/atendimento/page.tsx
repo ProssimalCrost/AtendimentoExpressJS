@@ -13,36 +13,47 @@ interface Atendimento {
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
   const lastCountRef = useRef(0);
+  const firstLoadRef = useRef(true); 
 
 /////  CARREGA ATENDIMENTOS //// 
-  async function loadAtendimentos() {
-    const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}`,
-    { cache: "no-store" }
-  );
+ async function loadAtendimentos() {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  if (!res.ok) {
-    console.error("Error na API:", res.status);
-    return;
+    if (!apiUrl) {
+      console.error("NEXT_PUBLIC_API_URL não está definida");
+      return;
+    }
+
+    const res = await fetch(apiUrl, {
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      console.error("Erro na API:", res.status);
+      return;
+    }
+
+    const text = await res.text();
+
+    if (!text || text.trim() === "") {
+      console.warn("Resposta vazia da API");
+      return;
+    }
+
+    const data = JSON.parse(text);
+    const lista = Array.isArray(data) ? data : [];
+
+    if (!firstLoadRef.current && lista.length > lastCountRef.current) {
+      notifyNewAtendimento();
+    }
+
+    setAtendimentos(lista);
+    lastCountRef.current = lista.length;
+    firstLoadRef.current = false;
+  } catch (err) {
+    console.error("Erro ao carregar atendimentos:", err);
   }
-
-  const text = await res.text();
-  if (!text){
-    console.warn("Resposta vazia da API");
-    return;
-  }
-  const data = await res.json();
-  const lista = Array.isArray(data) ? data : [];
-
-  // 🚨 VERIFICA SE CHEGOU NOVO
-  if (lista.length > lastCountRef.current) {
-    notifyNewAtendimento();
-  }
-
-  // Atualiza o contador
-  lastCountRef.current = lista.length;
-
-  setAtendimentos(lista);
 }
 ///////////////////////////////// 
 const audioRef = useRef<HTMLAudioElement | null>(null);
