@@ -36,10 +36,10 @@ export default function AtendimentosPage() {
 
     const text = await res.text();
 
-    if (!text || text.trim() === "") {
+  /*  if (!text || text.trim() === "") {
       console.warn("Resposta vazia da API");
       return;
-    }
+    }*/
 
     const data = JSON.parse(text);
     const lista = Array.isArray(data) ? data : [];
