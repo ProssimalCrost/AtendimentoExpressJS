@@ -16,6 +16,8 @@ app.use((0, cors_1.default)({
     origin: [
         "http://localhost:3000",
         "https://atendimento-express.vercel.app",
+        "https://atendimento-express.vercel.app/atendimento",
+        "https://atendimento-express.vercel.app",
     ],
     methods: ["GET", "POST", "PATCH", "OPTIONS"],
     credentials: true,
@@ -33,6 +35,8 @@ const allowedOrigins = [
     "http://localhost:3000",
     "http://localhost:3333",
     FRONTEND_URL,
+    "https://atendimento-express.vercel.app/atendimento",
+    "https://atendimento-express.vercel.app",
 ];
 const corsOptions = {
     origin: (origin, callback) => {
@@ -67,6 +71,8 @@ httpServer.listen(PORT, () => {
     console.log(` Ambiente: ${NODE_ENV}`);
     console.log(` Porta: ${PORT}`);
     console.log(` Frontend URL: ${FRONTEND_URL}`);
+    console.log(`teste:${process.env.TESTE}`);
+    console.log(`DATABASE_URL: ${process.env.DATABASE_URL}`);
     console.log("=================================");
 });
 //# sourceMappingURL=server.js.map

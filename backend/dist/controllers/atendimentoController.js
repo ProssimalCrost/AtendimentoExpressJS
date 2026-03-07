@@ -24,7 +24,6 @@ class AttendimentoController {
         return res.status(201).json(result);
     }
     async list(req, res) {
-        //const limit = Number(req.query.limit) || 50;
         const atendimentos = await services_js_1.default.list;
         const result = await services_js_1.default.list();
         return res.status(200).json(atendimentos);

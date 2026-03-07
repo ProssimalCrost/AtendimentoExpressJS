@@ -28,12 +28,11 @@ class AtendimentoService {
     };
   }
 
-  async list(limit = 50) {
+  async list() {
     const rows = await database
       .select()
       .from(atendimentos)
-      .orderBy(asc(atendimentos.created_at))
-      .limit(limit);
+      .orderBy(asc(atendimentos.created_at));
 
     return rows;
   }

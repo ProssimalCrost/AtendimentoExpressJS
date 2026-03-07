@@ -23,12 +23,11 @@ class AtendimentoService {
             id,
         };
     }
-    async list(limit = 50) {
+    async list() {
         const rows = await drizzle_js_1.database
             .select()
             .from(schema_js_1.atendimentos)
-            .orderBy((0, drizzle_orm_1.asc)(schema_js_1.atendimentos.created_at))
-            .limit(limit);
+            .orderBy((0, drizzle_orm_1.asc)(schema_js_1.atendimentos.created_at));
         return rows;
     }
     async finish(id) {
