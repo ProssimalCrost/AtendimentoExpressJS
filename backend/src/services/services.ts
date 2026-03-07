@@ -29,13 +29,18 @@ class AtendimentoService {
   }
 
   async list() {
+    try {
     const rows = await database
       .select()
       .from(atendimentos)
       .orderBy(asc(atendimentos.created_at));
 
     return rows;
+  } catch (error) {
+    console.error("Error fetching atendimentos:", error);
+    throw error;
   }
+  };
 
   async finish(id: string) {
     await database
