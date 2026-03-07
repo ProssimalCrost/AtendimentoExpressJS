@@ -16,40 +16,46 @@ export default function AtendimentosPage() {
   const firstLoadRef = useRef(true);
 
   async function loadAtendimentos() {
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-      if (!apiUrl) {
-        console.error("NEXT_PUBLIC_API_URL não está definida");
-        return;
-      }
-
-      const res = await fetch(apiUrl, {
-        method: "GET",
-        cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!res.ok) {
-        throw new Error(`Erro na API: ${res.status}`);
-      }
-
-      const data = await res.json();
-      const lista: Atendimento[] = Array.isArray(data) ? data : [];
-
-      if (!firstLoadRef.current && lista.length > lastCountRef.current) {
-        notifyNewAtendimento();
-      }
-
-      setAtendimentos(lista);
-      lastCountRef.current = lista.length;
-      firstLoadRef.current = false;
-    } catch (error) {
-      console.error("Erro ao carregar atendimentos:", error);
+    if (!apiUrl) {
+      console.error("NEXT_PUBLIC_API_URL não está definida");
+      return;
     }
+
+    const res = await fetch(apiUrl, {
+      method: "GET",
+      cache: "no-store",
+    });
+
+    if (!res.ok) {
+      throw new Error(`Erro na API: ${res.status}`);
+    }
+
+    const text = await res.text();
+
+    if (!text.trim()) {
+      setAtendimentos([]);
+      lastCountRef.current = 0;
+      firstLoadRef.current = false;
+      return;
+    }
+
+    const data = JSON.parse(text);
+    const lista: Atendimento[] = Array.isArray(data) ? data : [];
+
+    if (!firstLoadRef.current && lista.length > lastCountRef.current) {
+      notifyNewAtendimento();
+    }
+
+    setAtendimentos(lista);
+    lastCountRef.current = lista.length;
+    firstLoadRef.current = false;
+  } catch (error) {
+    console.error("Erro ao carregar atendimentos:", error);
   }
+}
 
   async function finalizarAtendimento(id: string) {
     try {
