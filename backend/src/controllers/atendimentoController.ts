@@ -19,11 +19,12 @@ class AttendimentoController {
         const result = await AttendimentoService.create({
             name: name.trim(),
             description: description?.trim() || null,
-            status: status?.trim() === "finished" ? "pending" : "finished",
-        });
+            status: "pending",
 
+        });
         // 3. responder ao cliente
         return res.status(201).json(result);
+        
     }
 
     async list(req: Request, res: Response) {

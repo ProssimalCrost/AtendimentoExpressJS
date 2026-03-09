@@ -15,8 +15,7 @@ export default function PorteiroPage() {
   setLoading(true);
 
   try {
-    // CRIA o atendimento
-    await fetch(
+    const response = await fetch(
       process.env.NEXT_PUBLIC_API_URL + "/",
       {
         method: "POST",
@@ -30,12 +29,18 @@ export default function PorteiroPage() {
       }
     );
 
-    //  Limpa o formulário
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Resposta do backend:", data);
+
     setName("");
     setDescription("");
-
+  } catch (error) {
+    console.error("Erro ao criar atendimento:", error);
   } finally {
-    // Finaliza loading
     setLoading(false);
   }
 }
