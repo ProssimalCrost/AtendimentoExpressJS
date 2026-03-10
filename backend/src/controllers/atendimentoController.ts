@@ -29,9 +29,7 @@ class AttendimentoController {
 
     async list(req: Request, res: Response) {
 
-        const atendimentos = await AttendimentoService.list
-
-         const result = await AttendimentoService.list();
+       const atendimentos = await AttendimentoService.list(); 
 
         return res.status(200).json(atendimentos)
     };

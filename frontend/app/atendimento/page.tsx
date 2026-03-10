@@ -43,6 +43,7 @@ export default function AtendimentosPage() {
       }
 
       const data = JSON.parse(text);
+      console.log("Atendimentos carregados:", data);
       const lista: Atendimento[] = Array.isArray(data) ? data : [];
 
       if (!firstLoadRef.current && lista.length > lastCountRef.current) {
