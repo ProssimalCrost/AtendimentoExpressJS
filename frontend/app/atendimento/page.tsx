@@ -16,46 +16,57 @@ export default function AtendimentosPage() {
   const firstLoadRef = useRef(true);
 
   async function loadAtendimentos() {
-  try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    if (!apiUrl) {
-      console.error("NEXT_PUBLIC_API_URL não está definida");
-      return;
-    }
+      if (!apiUrl) {
+        console.error("NEXT_PUBLIC_API_URL não está definida");
+        return;
+      }
 
-    const res = await fetch(apiUrl, {
-      method: "GET",
-      cache: "no-store",
-    });
+      const res = await fetch(apiUrl, {
+        method: "GET",
+        cache: "no-store",
+      });
 
-    if (!res.ok) {
-      throw new Error(`Erro na API: ${res.status}`);
-    }
+      if (!res.ok) {
+        throw new Error(`Erro na API: ${res.status}`);
+      }
 
-    const text = await res.text();
+      const text = await res.text();
 
-    if (!text.trim()) {
-      setAtendimentos([]);
-      lastCountRef.current = 0;
+      if (!text.trim()) {
+        setAtendimentos([]);
+        lastCountRef.current = 0;
+        firstLoadRef.current = false;
+        return;
+      }
+
+      const data = JSON.parse(text);
+      const lista: Atendimento[] = Array.isArray(data) ? data : [];
+
+      if (!firstLoadRef.current && lista.length > lastCountRef.current) {
+        notifyNewAtendimento();
+      }
+
+      setAtendimentos(lista);
+      lastCountRef.current = lista.length;
       firstLoadRef.current = false;
-      return;
+    } catch (error) {
+      console.error("Erro ao carregar atendimentos:", error);
     }
-
-    const data = JSON.parse(text);
-    const lista: Atendimento[] = Array.isArray(data) ? data : [];
-
-    if (!firstLoadRef.current && lista.length > lastCountRef.current) {
-      notifyNewAtendimento();
-    }
-
-    setAtendimentos(lista);
-    lastCountRef.current = lista.length;
-    firstLoadRef.current = false;
-  } catch (error) {
-    console.error("Erro ao carregar atendimentos:", error);
   }
-}
+
+  useEffect(() => {
+    loadAtendimentos(); // carrega na primeira vez
+
+    const interval = setInterval(() => {
+      loadAtendimentos();
+    }, 5000); // a cada 5 segundos
+
+    return () => clearInterval(interval); // limpa ao desmontar
+  }, []);
+
 
   async function finalizarAtendimento(id: string) {
     try {
@@ -87,16 +98,6 @@ export default function AtendimentosPage() {
     if ("Notification" in window && Notification.permission === "default") {
       Notification.requestPermission();
     }
-  }, []);
-
-  useEffect(() => {
-    loadAtendimentos();
-
-    const interval = setInterval(() => {
-      loadAtendimentos();
-    }, 2000);
-
-    return () => clearInterval(interval);
   }, []);
 
   const pendentes = atendimentos.filter(
