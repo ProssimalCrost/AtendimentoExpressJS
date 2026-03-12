@@ -5,10 +5,18 @@ import { notifyNewAtendimento } from "@/utils/notify";
 
 interface Atendimento {
   id: string;
-  name: string;
-  description: string | null;
+  tipo: number;
   status: "pending" | "finished";
 }
+
+const tiposAtendimento: Record<number, string> = {
+  1: "Pagamento de mensalidade de esporte",
+  2: "Pagamento de associação",
+  3: "Matrícula do esporte",
+  4: "Se associar",
+  5: "Informação",
+  6: "Outros",
+};
 
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
@@ -44,6 +52,7 @@ export default function AtendimentosPage() {
 
       const data = JSON.parse(text);
       console.log("Atendimentos carregados:", data);
+
       const lista: Atendimento[] = Array.isArray(data) ? data : [];
 
       if (!firstLoadRef.current && lista.length > lastCountRef.current) {
@@ -59,15 +68,14 @@ export default function AtendimentosPage() {
   }
 
   useEffect(() => {
-    loadAtendimentos(); // carrega na primeira vez
+    loadAtendimentos();
 
     const interval = setInterval(() => {
       loadAtendimentos();
-    }, 5000); // a cada 5 segundos
+    }, 5000);
 
-    return () => clearInterval(interval); // limpa ao desmontar
+    return () => clearInterval(interval);
   }, []);
-
 
   async function finalizarAtendimento(id: string) {
     try {
@@ -130,14 +138,9 @@ export default function AtendimentosPage() {
                 >
                   <div>
                     <p className="font-medium text-blue-600">
-                      {atendimento.name}
+                      {atendimento.tipo} -{" "}
+                      {tiposAtendimento[atendimento.tipo] || "Tipo não informado"}
                     </p>
-
-                    {atendimento.description && (
-                      <p className="text-sm text-gray-500">
-                        {atendimento.description}
-                      </p>
-                    )}
                   </div>
 
                   <button
@@ -169,14 +172,9 @@ export default function AtendimentosPage() {
                   className="rounded-lg border bg-green-50 p-4"
                 >
                   <p className="font-medium text-green-600">
-                    {atendimento.name}
+                    {atendimento.tipo} -{" "}
+                    {tiposAtendimento[atendimento.tipo] || "Tipo não informado"}
                   </p>
-
-                  {atendimento.description && (
-                    <p className="text-sm text-gray-500">
-                      {atendimento.description}
-                    </p>
-                  )}
                 </li>
               ))
             ) : (

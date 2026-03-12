@@ -1,50 +1,68 @@
-import AttendimentoService from '../services/services.js'
-import { response, type Request, type Response } from "express";
+import { Request, Response } from "express";
+import { AtendimentosService } from "../services/atendimentos.service";
 
-class AttendimentoController {
-    // Criar atendimento
-    async create(req: Request, res: Response) {
+const atendimentosService = new AtendimentosService();
 
-        const { name, description, status } = req.body ?? {};
-        console.log("REQ BODY REAL:", req.body);
-        console.log("➡️ POST /atendimentos recebido", req.body);
-
-
-        // 1. validação
-        if (!name || name.trim() === "") {
-            return res.status(400).json({ error: "O nome é obrigatório." });
-        }
-
-        // 2. a requisição, deve bater com create do service
-        const result = await AttendimentoService.create({
-            name: name.trim(),
-            description: description?.trim() || null,
-            status: "pending",
-
-        });
-        // 3. responder ao cliente
-        return res.status(201).json(result);
-        
+export class AtendimentosController {
+  async listar(_req: Request, res: Response) {
+    try {
+      const lista = await atendimentosService.listar();
+      return res.status(200).json(lista);
+    } catch (error) {
+      console.error("Erro ao listar atendimentos:", error);
+      return res.status(500).json({
+        error: "Erro ao listar atendimentos.",
+      });
     }
+  }
 
-    async list(req: Request, res: Response) {
+  async criar(req: Request, res: Response) {
+    try {
+      const { tipo } = req.body;
 
-       const atendimentos = await AttendimentoService.list(); 
+      const novoAtendimento = await atendimentosService.criar(tipo);
 
-        return res.status(200).json(atendimentos)
-    };
+      return res.status(201).json(novoAtendimento);
+    } catch (error) {
+      console.error("Erro ao criar atendimento:", error);
 
-    async finish(req: Request, res: Response) {
-        const { id } = req.params;
+      if (error instanceof Error) {
+        return res.status(400).json({
+          error: error.message,
+        });
+      }
 
-        if (!id) {
-            return res.status(400).json({ error: "ID é obrigatório." });
+      return res.status(500).json({
+        error: "Erro ao criar atendimento.",
+      });
+    }
+  }
+
+  async finalizar(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      const atendimentoFinalizado = await atendimentosService.finalizar(id);
+
+      return res.status(200).json(atendimentoFinalizado);
+    } catch (error) {
+      console.error("Erro ao finalizar atendimento:", error);
+
+      if (error instanceof Error) {
+        if (error.message === "Atendimento não encontrado.") {
+          return res.status(404).json({
+            error: error.message,
+          });
         }
 
-        const result = await AttendimentoService.finish(id);
-        return res.status(200).json(result);
+        return res.status(400).json({
+          error: error.message,
+        });
+      }
 
-};
-};
-
-export default new AttendimentoController();
+      return res.status(500).json({
+        error: "Erro ao finalizar atendimento.",
+      });
+    }
+  }
+}
