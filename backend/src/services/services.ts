@@ -16,7 +16,7 @@ const tiposAtendimento: Record<number, string> = {
   6: "Outros",
 };
 
-class AtendimentoService {
+class atendimentosService {
   async create(data: CreateAtendimentoDTO) {
     if (!tiposAtendimento[data.tipo]) {
       throw new Error("Tipo de atendimento inválido");
@@ -56,6 +56,20 @@ class AtendimentoService {
   }
 
   async finish(id: string) {
+    const existing = await database
+      .select()
+      .from(atendimentos)
+      .where(eq(atendimentos.id, id))
+      .limit(1);
+
+    if (existing.length === 0) {
+      throw new Error("Atendimento não encontrado.");
+    }
+
+    if (existing[0].status === "finished") {
+      throw new Error("Atendimento já foi finalizado.");
+    }
+
     await database
       .update(atendimentos)
       .set({ status: "finished" })
@@ -63,8 +77,12 @@ class AtendimentoService {
 
     return {
       message: `Atendimento ${id} finalizado com sucesso`,
+      id,
+      tipo: existing[0].tipo,
+      tipoLabel: tiposAtendimento[existing[0].tipo] ?? "Desconhecido",
+      status: "finished",
     };
   }
 }
 
-export default new AtendimentoService();
+export default new atendimentosService();

@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
-import { AtendimentosService } from "../services/atendimentos.service";
-
-const atendimentosService = new AtendimentosService();
+import atendimentosService from "../services/services";
 
 export class AtendimentosController {
   async listar(_req: Request, res: Response) {
     try {
-      const lista = await atendimentosService.listar();
+      const lista = await atendimentosService.list();
       return res.status(200).json(lista);
     } catch (error) {
       console.error("Erro ao listar atendimentos:", error);
@@ -20,7 +18,7 @@ export class AtendimentosController {
     try {
       const { tipo } = req.body;
 
-      const novoAtendimento = await atendimentosService.criar(tipo);
+      const novoAtendimento = await atendimentosService.create({ tipo });
 
       return res.status(201).json(novoAtendimento);
     } catch (error) {
@@ -42,7 +40,7 @@ export class AtendimentosController {
     try {
       const { id } = req.params;
 
-      const atendimentoFinalizado = await atendimentosService.finalizar(id);
+      const atendimentoFinalizado = await atendimentosService.finish(id);
 
       return res.status(200).json(atendimentoFinalizado);
     } catch (error) {
