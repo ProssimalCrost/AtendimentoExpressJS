@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import atendimentosService from "../services/services";
 
-export class AtendimentosController {
-  async listar(_req: Request, res: Response) {
+class AtendimentosController {
+  async list(_req: Request, res: Response) {
     try {
       const lista = await atendimentosService.list();
       return res.status(200).json(lista);
@@ -14,7 +14,7 @@ export class AtendimentosController {
     }
   }
 
-  async criar(req: Request, res: Response) {
+  async create(req: Request, res: Response) {
     try {
       const { tipo } = req.body;
 
@@ -36,7 +36,7 @@ export class AtendimentosController {
     }
   }
 
-  async finalizar(req: Request, res: Response) {
+  async finish(req: Request, res: Response) {
     try {
       const { id } = req.params;
 
@@ -64,3 +64,5 @@ export class AtendimentosController {
     }
   }
 }
+
+export default new AtendimentosController();

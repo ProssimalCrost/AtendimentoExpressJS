@@ -6,17 +6,10 @@ import { notifyNewAtendimento } from "@/utils/notify";
 interface Atendimento {
   id: string;
   tipo: number;
+  tipoLabel: string;
   status: "pending" | "finished";
+  created_at?: string;
 }
-
-const tiposAtendimento: Record<number, string> = {
-  1: "Pagamento de mensalidade de esporte",
-  2: "Pagamento de associação",
-  3: "Matrícula do esporte",
-  4: "Se associar",
-  5: "Informação",
-  6: "Outros",
-};
 
 export default function AtendimentosPage() {
   const [atendimentos, setAtendimentos] = useState<Atendimento[]>([]);
@@ -55,12 +48,16 @@ export default function AtendimentosPage() {
 
       const lista: Atendimento[] = Array.isArray(data) ? data : [];
 
-      if (!firstLoadRef.current && lista.length > lastCountRef.current) {
+      const pendentesNovos = lista.filter(
+        (atendimento) => atendimento.status === "pending"
+      ).length;
+
+      if (!firstLoadRef.current && pendentesNovos > lastCountRef.current) {
         notifyNewAtendimento();
       }
 
       setAtendimentos(lista);
-      lastCountRef.current = lista.length;
+      lastCountRef.current = pendentesNovos;
       firstLoadRef.current = false;
     } catch (error) {
       console.error("Erro ao carregar atendimentos:", error);
@@ -138,8 +135,7 @@ export default function AtendimentosPage() {
                 >
                   <div>
                     <p className="font-medium text-blue-600">
-                      {atendimento.tipo} -{" "}
-                      {tiposAtendimento[atendimento.tipo] || "Tipo não informado"}
+                      {atendimento.tipo}. {atendimento.tipoLabel}
                     </p>
                   </div>
 
@@ -172,8 +168,7 @@ export default function AtendimentosPage() {
                   className="rounded-lg border bg-green-50 p-4"
                 >
                   <p className="font-medium text-green-600">
-                    {atendimento.tipo} -{" "}
-                    {tiposAtendimento[atendimento.tipo] || "Tipo não informado"}
+                    {atendimento.tipo}. {atendimento.tipoLabel}
                   </p>
                 </li>
               ))
