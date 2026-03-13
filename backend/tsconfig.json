@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     /* Estrutura de pastas */
-    "rootDir": "./", 
+    "rootDir": "./",  //  era "./"
     "outDir": "./dist",
 
     /* Node.js + ESM (produção) */
@@ -22,6 +22,6 @@
     "sourceMap": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "drizzle/drizzle.ts"],
-  "exclude": ["node_modules", "dist", "drizzle", "drizzle.config.ts"]
+  "include": ["src/**/*", "drizzle/**/*"],  //  removeu o drizzle/drizzle.ts (está fora do rootDir)
+  "exclude": ["node_modules", "dist", "drizzle.config.ts"]
 }
