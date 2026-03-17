@@ -68,7 +68,7 @@ export default function SolicitarAtendimentoPage() {
   }, [loadingTipo]); // re-registra quando loadingTipo muda
 
   return (
-    <main className="min-h-screen bg-[url('/images/bg1.png')] bg-center bg-cover bg-no-repeat p-6">
+    <main className="min-h-screen bg-[url('/images/bg_azul.png')] bg-center bg-cover bg-no-repeat p-6">
       <div className="mx-auto max-w-3xl rounded-2xl bg-white p-8 shadow-2xl">
         <h1 className="mb-2 text-center text-3xl font-bold text-blue-700">
           Atendimento Express
