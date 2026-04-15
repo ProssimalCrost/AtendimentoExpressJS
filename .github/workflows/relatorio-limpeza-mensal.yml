@@ -1,0 +1,43 @@
+name: Relatorio e Limpeza Mensal
+
+on:
+  schedule:
+    # 03:00 UTC = 00:00 em America/Sao_Paulo normalmente
+    - cron: '0 3 28-31 * *'
+  workflow_dispatch:
+
+jobs:
+  relatorio-limpeza:
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Sao_Paulo
+      NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASS: ${{ secrets.SMTP_PASS }}
+      MAIL_FROM: ${{ secrets.MAIL_FROM }}
+      MAIL_TO: josedocarmo@asseit.com.br
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm install pg exceljs nodemailer
+
+      - name: Executar relatório e limpeza
+        run: node scripts/relatorio-limpeza-mensal.js
+
+      - name: Publicar relatório como artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-mensal-atendimento-express
+          path: reports/*.xlsx
