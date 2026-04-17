@@ -40,10 +40,10 @@ async function ensureDir(dir) {
 }
 
 async function main() {
-  if (!isLastDayOfMonth()) {
-    console.log("Hoje não é o último dia do mês. Encerrando sem executar.");
-    process.exit(0);
-  }
+  if (!isLastDayOfMonth() && !process.env.TEST_MODE) {
+  console.log("Hoje não é o último dia do mês. Encerrando.");
+  process.exit(0);
+}
 
   const {
     NEON_DATABASE_URL,
