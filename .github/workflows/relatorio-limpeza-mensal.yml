@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: America/Sao_Paulo
+      TEST_MODE: true
       NEON_DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
       SMTP_HOST: ${{ secrets.SMTP_HOST }}
       SMTP_PORT: ${{ secrets.SMTP_PORT }}
