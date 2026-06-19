@@ -76,7 +76,7 @@ export default function AtendimentosPage() {
 
   async function finalizarAtendimento(id: string) {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL ;
 
       if (!apiUrl) {
         console.error("NEXT_PUBLIC_API_URL não está definida");
@@ -115,8 +115,8 @@ export default function AtendimentosPage() {
   );
 
   return (
-    <main className="min-h-screen bg-white p-8 bg-[url('/images/bg_azul.png')] bg-center bg-cover bg-no-repeat">
-      <h1 className="mb-8 text-center text-3xl font-bold text-white">
+    <main className="min-h-screen p-8 bg-blue-80 bg-center bg-cover bg-no-repeat">
+      <h1 className="mb-8 text-center text-3xl font-bold text-black">
         Sistema de Atendimentos
       </h1>
 

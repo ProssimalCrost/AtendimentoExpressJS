@@ -7,85 +7,54 @@ import { router } from "./routes/atendimentos.js";
 const app = express();
 const httpServer = http.createServer(app);
 
-app.use(express.json({ type: "*/*" }));
-app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-    origin: [
-        "http://localhost:3000",
-        "https://atendimento-express.vercel.app",
-        "https://atendimento-express.vercel.app/atendimento",
-        "https://atendimento-express.vercel.app",
-
-    ],
-    methods: ["GET", "POST", "PATCH", "OPTIONS"],
-    credentials: true,
-}));
-
-/* Comando para iniciar o srvidor: node --run dev http://localhost:3000/atendimentos */ 
-const server = http.createServer(app);
-
-app.use("/atendimentos", router); /*Ao usar "/atendimentos, router" as rotas em router devem conter apenas "/" */ 
-
-const PORT = process.env.PORT || 3333;
+const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || "development";
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
-// =======================
-// 🔐 CORS INTELIGENTE
-// =======================
-
+// Permite localhost, IPs da rede local e Vercel
 const allowedOrigins = [
   "http://localhost:3000",
-  "http://localhost:3333",
+  "http://127.0.0.1:3000",
+  "http://10.0.0.189:3000",
   FRONTEND_URL,
-  "https://atendimento-express.vercel.app/atendimento",
   "https://atendimento-express.vercel.app",
+].filter(Boolean);
 
-];
+const isLocalNetwork = (origin: string) => {
+  return /^http:\/\/(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+)(:\d+)?$/.test(origin);
+};
 
-const corsOptions = {
-  origin: (origin: string | undefined,
-    callback: (err: Error | null, allow?: boolean) => void) => {
-    // Permite requests sem origin (Postman etc)
+app.use(cors({
+  origin: (origin, callback) => {
     if (!origin) return callback(null, true);
 
-    // Permite localhost
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
 
-    // Permite qualquer deploy preview do Vercel
+    if (isLocalNetwork(origin)) {
+      return callback(null, true);
+    }
+
     if (/\.vercel\.app$/.test(origin)) {
       return callback(null, true);
     }
 
-    return callback(new Error("❌ CORS bloqueado"));
+    return callback(new Error(`CORS bloqueado para origem: ${origin}`));
   },
-  methods: ["GET", "POST", "PATCH", "OPTIONS"],
+  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
   credentials: true,
-};
+}));
 
-app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ type: "*/*" }));
 app.use(express.urlencoded({ extended: true }));
-
-
-// ========================
-// 📡 ROTAS
-// =======================
 
 app.use("/atendimentos", router);
 
-// =======================
-// 🚀 START SERVER
-// =======================
-
-httpServer.listen(PORT, () => {
+httpServer.listen(Number(PORT), "0.0.0.0", () => {
   console.log("=================================");
-  console.log(` Ambiente: ${NODE_ENV}`);
-  console.log(` Porta: ${PORT}`);
-  console.log(` Frontend URL: ${FRONTEND_URL}`);
-  console.log(`teste:${process.env.TESTE}`);
-  console.log(`DATABASE_URL: ${process.env.DATABASE_URL}`);
+  console.log(`Ambiente: ${NODE_ENV}`);
+  console.log(`API rodando em: http://0.0.0.0:${PORT}`);
+  console.log(`Frontend URL: ${FRONTEND_URL}`);
   console.log("=================================");
 });

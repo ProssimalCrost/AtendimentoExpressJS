@@ -7,6 +7,7 @@
     /* Node.js + ESM (produção) */
     "module": "CommonJS",
     "moduleResolution": "Node",
+    "ignoreDeprecations": "6.0",
     "target": "ES2020",
 
     "allowImportingTsExtensions": false,
