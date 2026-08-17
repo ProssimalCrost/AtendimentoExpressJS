@@ -28,14 +28,14 @@ export default function SolicitarAtendimentoPage() {
         throw new Error("NEXT_PUBLIC_API_URL não está definida");
       }
 
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${apiUrl}/atendimentos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ tipo }),
       });
-
+      console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
       const data = await response.json();
 
       if (!response.ok) {

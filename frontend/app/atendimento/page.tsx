@@ -25,7 +25,7 @@ export default function AtendimentosPage() {
         return;
       }
 
-      const res = await fetch(apiUrl, {
+      const res = await fetch(`${apiUrl}/atendimentos`, {
         method: "GET",
         cache: "no-store",
       });
@@ -76,7 +76,7 @@ export default function AtendimentosPage() {
 
   async function finalizarAtendimento(id: string) {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL ;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL + "/atendimentos";
 
       if (!apiUrl) {
         console.error("NEXT_PUBLIC_API_URL não está definida");

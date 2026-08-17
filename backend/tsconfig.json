@@ -1,28 +1,20 @@
 {
   "compilerOptions": {
-    /* Estrutura de pastas */
-    "rootDir": "./",  //  era "./"
+    "rootDir": ".",
     "outDir": "./dist",
 
-    /* Node.js + ESM (produção) */
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "ignoreDeprecations": "6.0",
     "target": "ES2020",
 
-    "allowImportingTsExtensions": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
 
-    /* Interoperabilidade */
     "esModuleInterop": true,
-
-    /* Tipagem */
-    "types": ["node"],
     "strict": true,
+    "skipLibCheck": true,
 
-    /* Build */
-    "sourceMap": true,
-    "skipLibCheck": true
+    "types": ["node"],
+    "sourceMap": true
   },
-  "include": ["src/**/*", "drizzle/**/*"],  //  removeu o drizzle/drizzle.ts (está fora do rootDir)
-  "exclude": ["node_modules", "dist", "drizzle.config.ts"]
+  "include": ["src/**/*", "drizzle/**/*.ts"],
+  "exclude": ["node_modules", "dist", "drizzle/meta"]
 }
